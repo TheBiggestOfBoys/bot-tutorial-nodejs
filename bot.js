@@ -1,6 +1,8 @@
-let botID = process.env.BOT_ID;
+var HTTPS = require('https');
 
-const quotes = [
+var botID = process.env.BOT_ID;
+
+var quotes = [
   "In this world you either drip or drown, and baby, I brought the life jacket.",
   "Ok pal",
   "Sure buddy",
@@ -10,12 +12,13 @@ const quotes = [
   "Tavin Reeves likes crotch shots.",
 ];
 
-const activationString = "Activate Jake's Bot";
+const activationString = "Activate Jake's Bot"
 
 function respond() {
-  let request = JSON.parse(this.req.chunks[0]);
+  var request = JSON.parse(this.req.chunks[0]);
+  var activationPhrase = "Activate Jake's Bot";
 
-  if (request.text &&  request.text === activationString) {
+  if(request.text && request.text === activationPhrase) {
     this.res.writeHead(200);
     postMessage();
     this.res.end();
@@ -28,24 +31,27 @@ function getRandomIndex(arr) {
 }
 
 function postMessage() {
-  let botResponse = quotes[getRandomIndex(quotes)];
+  var botResponse, options, body, botReq;
 
-  let options = {
+  botResponse = quotes[getRandomIndex(quotes)];
+
+  options = {
     hostname: 'api.groupme.com',
     path: '/v3/bots/post',
     method: 'POST'
   };
 
-  let body = {
-    bot_id : botID,
-    text : botResponse
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
   };
-  
-  console.log('sending ' + botResponse + ' to ' + botID);
-  console.log(body);
 
-  let botReq = _request(options, function(res) {
-      if (res.statusCode != 202) {
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
         console.log('rejecting bad status code ' + res.statusCode);
       }
   });
@@ -59,5 +65,5 @@ function postMessage() {
   botReq.end(JSON.stringify(body));
 }
 
-const _respond = respond;
-export { _respond as respond };
+
+exports.respond = respond;
