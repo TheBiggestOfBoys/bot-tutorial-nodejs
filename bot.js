@@ -2,6 +2,21 @@ var HTTPS = require('https');
 
 const botID = process.env.BOT_ID;
 
+const options = {
+  hostname: 'api.groupme.com',
+  path: '/v3/bots/post',
+  method: 'POST'
+};
+
+var body = {
+  bot_id: botID,
+  text: "",
+  attachments: {
+    type: "image",
+    url: ""
+  }
+};
+
 const quotes = [
   "In this world you either drip or drown, and baby, I brought the life jacket.",
   "Ok pal",
@@ -38,30 +53,15 @@ function getRandomIndex(arr) {
 }
 
 function postMessage() {
-  var botResponse, options, body, botReq, imageURL;
+  var botResponse = quotes[getRandomIndex(quotes)];
+  var imageURL = imageURLs[getRandomIndex(imageURLs)];
 
-  botResponse = quotes[getRandomIndex(quotes)];
-
-  imageURL = imageURLs[getRandomIndex(imageURLs)];
-
-  options = {
-    hostname: 'api.groupme.com',
-    path: '/v3/bots/post',
-    method: 'POST'
-  };
-
-  body = {
-    bot_id: botID,
-    text: botResponse,
-    attachments: {
-      type: "image",
-      url: imageURL
-    }
-  };
+  body.text = botResponse;
+  body.attachments.url = imageURL;
 
   console.log('sending ' + botResponse + ' to ' + botID);
 
-  botReq = HTTPS.request(options, function (res) {
+  var botReq = HTTPS.request(options, function (res) {
     if (res.statusCode != 202) {
       console.log('rejecting bad status code ' + res.statusCode);
     }
@@ -75,6 +75,5 @@ function postMessage() {
   });
   botReq.end(JSON.stringify(body));
 }
-
 
 exports.respond = respond;
