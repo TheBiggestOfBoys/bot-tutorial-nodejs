@@ -25,6 +25,22 @@ const quotes = [
   "In this world you either milk or get milked, and baby, I'm the cow.",
   "All [REDACTED] Week ever was, was me sitting in the DC drinking milk, in a funny outfit.",
   "Tavin Reeves likes crotch shots.",
+  "Uhhhh, yeah",
+  "That's right!",
+  "So true!",
+  "I hardly know her!",
+  "💀",
+  "🗿",
+  "☝️🤓",
+  "☝️🤓 Erhm, akshulally",
+  "You can save by bundling Home & Auto",
+  "[RËDÁÇTÊD]",
+  "Hello, I'm Jake",
+  "Look at me, I'm Jake, I'm so tall and cool and attractive",
+  "bruh",
+  "**VINE BOOM SOUND EFFECT**",
+  "Otis.png"
+  "RIP [RËDÁÇTÊD] Week",
 ];
 
 const imageURLs = [
