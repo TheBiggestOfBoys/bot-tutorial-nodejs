@@ -3,7 +3,7 @@ var HTTPS = require('https');
 var botID = process.env.BOT_ID;
 
 var quotes = getLines("quotes.txt");
-var imageLinks = getLines("image links.txt");
+//var imageLinks = getLines("image links.txt");
 
 var activationString = "Activate Jake's Bot"
 
@@ -41,14 +41,14 @@ function postMessage() {
   body = {
     bot_id : botID,
     text : botResponse,
-    attachments :
-    {
-      type  : "image",
-      url   : ""
-    }
+    //attachments :
+    //{
+    //  type  : "image",
+    //  url   : ""
+    //}
   };
 
-  attachments.url = imageLinks[Math.random(length(imageLinks))];
+  //attachments.url = imageLinks[Math.random(length(imageLinks))];
   
   console.log('sending ' + botResponse + ' to ' + botID);
   console.log(body);
