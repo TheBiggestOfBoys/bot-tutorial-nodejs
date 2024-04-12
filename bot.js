@@ -14,19 +14,30 @@ const quotes = [
 
 const imageURLs = [
   "https://i.groupme.com/1080x1079.jpeg.e08faeb0a4bb4068b458a3f63994a842.large",
-  "https://i.groupme.com/750x650.png.8874165939864b6b9d26ad5e918dcd0d",
-  "https://i.groupme.com/375x666.jpeg.6bef1d29066e4ace89ad056a551eceb5",
-  "https://i.groupme.com/720x1280.jpeg.017a0936855f4703b73bb28cc2d974a3",
-  "https://i.groupme.com/433x577.jpeg.6347f72c4ce0467998beb54f9460bd77",
-  "https://i.groupme.com/3024x4032.jpeg.c6f14d8fa5b44c30b0bbb031b3634751",
-]
+  "https://i.groupme.com/750x650.png.8874165939864b6b9d26ad5e918dcd0d.large",
+  "https://i.groupme.com/375x666.jpeg.6bef1d29066e4ace89ad056a551eceb5.large",
+  "https://i.groupme.com/720x1280.jpeg.017a0936855f4703b73bb28cc2d974a3.large",
+  "https://i.groupme.com/433x577.jpeg.6347f72c4ce0467998beb54f9460bd77.large",
+  "https://i.groupme.com/3024x4032.jpeg.c6f14d8fa5b44c30b0bbb031b3634751.large",
+];
 
-const activationPhrase = "Activate that sucka!"
+const activationPhrase = "Activate that sucka!";
+const quotifyPhrase = '"Bot"';
+
+var shouldQuotify = false;
 
 function respond() {
+  shouldQuotify = false;
   var request = JSON.parse(this.req.chunks[0]);
 
   if (request.text && request.text === activationPhrase) {
+    this.res.writeHead(200);
+    postMessage();
+    this.res.end();
+  }
+
+  if (request.text && request.text === quotifyPhrase) {
+    shouldQuotify = true;
     this.res.writeHead(200);
     postMessage();
     this.res.end();
@@ -38,10 +49,29 @@ function getRandomIndex(arr) {
   return randomIndex;
 }
 
+function quotify(string, amount) {
+  var quotifiedString  = "";
+  string.forEach(element => {
+    if (Math.random() > amount) {
+      quotifiedString += '"' + element + '" ';
+    }
+    else {
+      quotifiedString += element;
+    }
+  });
+  return quotifiedString;
+}
+
 function postMessage() {
   var botResponse, options, body, botReq, imageURL;
 
-  botResponse = quotes[getRandomIndex(quotes)];
+  if (shouldQuotify) {
+    botResponse = quotify(quotes[getRandomIndex(quotes)]);
+  }
+  else {
+    botResponse = quotes[getRandomIndex(quotes)];
+  }
+
   imageURL = imageURLs[getRandomIndex(imageURLs)];
 
   options = {
