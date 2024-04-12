@@ -1,4 +1,4 @@
-import { request as _request } from 'https';
+var HTTPS = require('https');
 
 const botID = process.env.BOT_ID;
 
@@ -61,7 +61,7 @@ function postMessage() {
 
   console.log('sending ' + botResponse + ' to ' + botID);
 
-  var botReq = _request(options, function (res) {
+  var botReq = HTTPS.request(options, function (res) {
     if (res.statusCode != 202) {
       console.log('rejecting bad status code ' + res.statusCode);
     }
@@ -76,5 +76,4 @@ function postMessage() {
   botReq.end(JSON.stringify(body));
 }
 
-const _respond = respond;
-export { _respond as respond };
+exports.respond = respond;
