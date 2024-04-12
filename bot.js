@@ -7,8 +7,9 @@ const imageLinks = getLines("image links.txt");
 
 function respond() {
   var request = JSON.parse(this.req.chunks[0]);
+  var botRegex = /^\/Activate Jake's Bot$/;
 
-  if (request.text && request.text == "Activate Jake's Bot") {
+  if (request.text &&  botRegex.test(request.text)) {
     this.res.writeHead(200);
     postMessage();
     this.res.end();
