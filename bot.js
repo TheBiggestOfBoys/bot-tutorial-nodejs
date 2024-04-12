@@ -1,8 +1,8 @@
 var HTTPS = require('https');
 
-var botID = process.env.BOT_ID;
+const botID = process.env.BOT_ID;
 
-var quotes = [
+const quotes = [
   "In this world you either drip or drown, and baby, I brought the life jacket.",
   "Ok pal",
   "Sure buddy",
@@ -12,13 +12,21 @@ var quotes = [
   "Tavin Reeves likes crotch shots.",
 ];
 
-const activationString = "Activate Jake's Bot"
+const imageURLs = [
+  "https://i.groupme.com/1080x1079.jpeg.e08faeb0a4bb4068b458a3f63994a842.large",
+  "https://i.groupme.com/750x650.png.8874165939864b6b9d26ad5e918dcd0d",
+  "https://i.groupme.com/375x666.jpeg.6bef1d29066e4ace89ad056a551eceb5",
+  "https://i.groupme.com/720x1280.jpeg.017a0936855f4703b73bb28cc2d974a3",
+  "https://i.groupme.com/433x577.jpeg.6347f72c4ce0467998beb54f9460bd77",
+  "https://i.groupme.com/3024x4032.jpeg.c6f14d8fa5b44c30b0bbb031b3634751",
+]
+
+const activationPhrase = "Activate that sucka!"
 
 function respond() {
   var request = JSON.parse(this.req.chunks[0]);
-  var activationPhrase = "Activate Jake's Bot";
 
-  if(request.text && request.text === activationPhrase) {
+  if (request.text && request.text === activationPhrase) {
     this.res.writeHead(200);
     postMessage();
     this.res.end();
@@ -31,9 +39,10 @@ function getRandomIndex(arr) {
 }
 
 function postMessage() {
-  var botResponse, options, body, botReq;
+  var botResponse, options, body, botReq, imageURL;
 
   botResponse = quotes[getRandomIndex(quotes)];
+  imageURL = imageURLs[getRandomIndex(imageURLs)];
 
   options = {
     hostname: 'api.groupme.com',
@@ -42,16 +51,18 @@ function postMessage() {
   };
 
   body = {
-    "bot_id" : botID,
-    "text" : botResponse
+    bot_id : botID,
+    text : botResponse,
+    attachments : {
+      type : "image",
+      url : imageURL
+    }
   };
 
   console.log('sending ' + botResponse + ' to ' + botID);
 
   botReq = HTTPS.request(options, function(res) {
-      if(res.statusCode == 202) {
-        //neat
-      } else {
+      if (res.statusCode != 202) {
         console.log('rejecting bad status code ' + res.statusCode);
       }
   });
