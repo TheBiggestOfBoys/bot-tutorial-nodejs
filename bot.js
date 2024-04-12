@@ -1,14 +1,21 @@
-var HTTPS = require('https');
+import HTTPS from 'https';
 
-var botID = process.env.BOT_ID;
+let botID = process.env.BOT_ID;
 
-var quotes = getLines("quotes.txt");
-//var imageLinks = getLines("image links.txt");
+const quotes = [
+  "In this world you either drip or drown, and baby, I brought the life jacket.",
+  "Ok pal",
+  "Sure buddy",
+  "Ok buster",
+  "In this world you either milk or get milked, and baby, I'm the cow.",
+  "All [REDACTED] Week ever was, was me sitting in the DC drinking milk, in a funny outfit.",
+  "Tavin Reeves likes crotch shots.",
+];
 
-var activationString = "Activate Jake's Bot"
+const activationString = "Activate Jake's Bot"
 
 function respond() {
-  var request = JSON.parse(this.req.chunks[0]);
+  let request = JSON.parse(this.req.chunks[0]);
 
   if (request.text &&  request.text === activationString) {
     this.res.writeHead(200);
@@ -17,43 +24,29 @@ function respond() {
   }
 }
 
-function getLines(path) {
-  fetch(path)
-    .then((response) => response.text())
-    .then((text) => {
-      const lines = text.split('\n'); // Split by newline character
-      console.log(lines);
-    })
-    .catch((error) => console.error(error));
+function getRandomIndex(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return randomIndex;
 }
 
 function postMessage() {
-  var botResponse, options, body, botReq;
+  let botResponse = quotes[getRandomIndex(quotes)];
 
-  botResponse = quotes[Math.random(length(quotes))];
-
-  options = {
+  let options = {
     hostname: 'api.groupme.com',
     path: '/v3/bots/post',
     method: 'POST'
   };
 
-  body = {
+  let body = {
     bot_id : botID,
-    text : botResponse,
-    //attachments :
-    //{
-    //  type  : "image",
-    //  url   : ""
-    //}
+    text : botResponse
   };
-
-  //attachments.url = imageLinks[Math.random(length(imageLinks))];
   
   console.log('sending ' + botResponse + ' to ' + botID);
   console.log(body);
 
-  botReq = _request(options, function(res) {
+  let botReq = _request(options, function(res) {
       if (res.statusCode != 202) {
         console.log('rejecting bad status code ' + res.statusCode);
       }
@@ -68,4 +61,5 @@ function postMessage() {
   botReq.end(JSON.stringify(body));
 }
 
-exports.respond = respond;
+const _respond = respond;
+export { _respond as respond };
