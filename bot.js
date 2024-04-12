@@ -1,27 +1,34 @@
-var HTTPS = require('https');
-var cool = require('cool-ascii-faces');
+import { request as _request } from 'https';
 
 var botID = process.env.BOT_ID;
 
-function respond() {
-  var request = JSON.parse(this.req.chunks[0]),
-      botRegex = /^\/cool guy$/;
+const quotes = getLines("quotes.txt");
+const imageLinks = getLines("image links.txt");
 
-  if(request.text && botRegex.test(request.text)) {
+function respond() {
+  var request = JSON.parse(this.req.chunks[0]);
+
+  if (request.text && request.text == "Activate Jake's Bot") {
     this.res.writeHead(200);
     postMessage();
-    this.res.end();
-  } else {
-    console.log("don't care");
-    this.res.writeHead(200);
     this.res.end();
   }
 }
 
-function postMessage() {
-  var botResponse, options, body, botReq;
+function getLines(path) {
+  fetch(path)
+    .then((response) => response.text())
+    .then((text) => {
+      const lines = text.split('\n'); // Split by newline character
+      console.log(lines);
+    })
+    .catch((error) => console.error(error));
+}
 
-  botResponse = cool();
+function postMessage() {
+  var botResponse, options, body, botReq, attachments;
+
+  botResponse = quotes[Math.random(length(quotes))];
 
   options = {
     hostname: 'api.groupme.com',
@@ -30,16 +37,21 @@ function postMessage() {
   };
 
   body = {
-    "bot_id" : botID,
-    "text" : botResponse
+    bot_id : botID,
+    text : botResponse,
+    attachments :
+    {
+      type  : "image",
+      url   : ""
+    }
   };
 
+  attachments.url = imageLinks[Math.random(length(imageLinks))];
+  
   console.log('sending ' + botResponse + ' to ' + botID);
 
-  botReq = HTTPS.request(options, function(res) {
-      if(res.statusCode == 202) {
-        //neat
-      } else {
+  botReq = _request(options, function(res) {
+      if(res.statusCode != 202) {
         console.log('rejecting bad status code ' + res.statusCode);
       }
   });
@@ -53,5 +65,5 @@ function postMessage() {
   botReq.end(JSON.stringify(body));
 }
 
-
-exports.respond = respond;
+const _respond = respond;
+export { _respond as respond };
