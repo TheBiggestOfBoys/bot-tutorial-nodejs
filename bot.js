@@ -1,15 +1,16 @@
-import { request as _request } from 'https';
+var HTTPS = require('https');
 
 var botID = process.env.BOT_ID;
 
-const quotes = getLines("quotes.txt");
-const imageLinks = getLines("image links.txt");
+var quotes = getLines("quotes.txt");
+var imageLinks = getLines("image links.txt");
+
+var activationString = "Activate Jake's Bot"
 
 function respond() {
   var request = JSON.parse(this.req.chunks[0]);
-  var botRegex = /^\/Activate Jake's Bot$/;
 
-  if (request.text &&  botRegex.test(request.text)) {
+  if (request.text &&  request.text === activationString) {
     this.res.writeHead(200);
     postMessage();
     this.res.end();
@@ -27,7 +28,7 @@ function getLines(path) {
 }
 
 function postMessage() {
-  var botResponse, options, body, botReq, attachments;
+  var botResponse, options, body, botReq;
 
   botResponse = quotes[Math.random(length(quotes))];
 
@@ -50,9 +51,10 @@ function postMessage() {
   attachments.url = imageLinks[Math.random(length(imageLinks))];
   
   console.log('sending ' + botResponse + ' to ' + botID);
+  console.log(body);
 
   botReq = _request(options, function(res) {
-      if(res.statusCode != 202) {
+      if (res.statusCode != 202) {
         console.log('rejecting bad status code ' + res.statusCode);
       }
   });
@@ -66,5 +68,4 @@ function postMessage() {
   botReq.end(JSON.stringify(body));
 }
 
-const _respond = respond;
-export { _respond as respond };
+exports.respond = respond;
