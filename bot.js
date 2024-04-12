@@ -1,5 +1,3 @@
-import HTTPS from 'https';
-
 let botID = process.env.BOT_ID;
 
 const quotes = [
@@ -12,7 +10,7 @@ const quotes = [
   "Tavin Reeves likes crotch shots.",
 ];
 
-const activationString = "Activate Jake's Bot"
+const activationString = "Activate Jake's Bot";
 
 function respond() {
   let request = JSON.parse(this.req.chunks[0]);
