@@ -1,4 +1,4 @@
-let HTTPS = require('https');
+var HTTPS = require('https');
 
 const botID = process.env.BOT_ID;
 
@@ -8,7 +8,7 @@ const options = {
   method: 'POST'
 };
 
-let body = {
+var body = {
   bot_id: botID,
   text: "",
   attachments: {
@@ -39,7 +39,7 @@ const imageURLs = [
 const activationPhrase = "Activate that sucka!";
 
 function respond() {
-  let request = JSON.parse(this.req.chunks[0]);
+  var request = JSON.parse(this.req.chunks[0]);
 
   if (request.text && request.text === activationPhrase) {
     this.res.writeHead(200);
@@ -53,15 +53,15 @@ function getRandomIndex(arr) {
 }
 
 function postMessage() {
-  let botResponse = quotes[getRandomIndex(quotes)];
-  let imageURL = imageURLs[getRandomIndex(imageURLs)];
+  var botResponse = quotes[getRandomIndex(quotes)];
+  var imageURL = imageURLs[getRandomIndex(imageURLs)];
 
   body.text = botResponse;
   body.attachments.url = imageURL;
 
   console.log('sending ' + botResponse + ' to ' + botID);
 
-  let botReq = HTTPS.request(options, function (res) {
+  var botReq = HTTPS.request(options, function (res) {
     if (res.statusCode != 202) {
       console.log('rejecting bad status code ' + res.statusCode);
     }
