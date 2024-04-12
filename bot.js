@@ -39,7 +39,7 @@ const quotes = [
   "Look at me, I'm Jake, I'm so tall and cool and attractive",
   "bruh",
   "**VINE BOOM SOUND EFFECT**",
-  "Otis.png"
+  "Otis.png",
   "RIP [RËDÁÇTÊD] Week",
 ];
 
