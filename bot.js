@@ -53,29 +53,14 @@ function respond() {
 		}
 
 		if (request.text.includes("er")) {
-			var words = request.text.split();
-			words.forEach(word => {
-				if (word.includes("er")) {
-					body.text = word[0].toUpperCase() + word.substring(1, word.length - 2) + " her?  I hardly know her!";
-					this.res.writeHead(200);
-					postMessage();
-					this.res.end();
-				}
-			});
+			body.text = hardlyKnowHer(request.text);
+			this.res.writeHead(200);
+			postMessage();
+			this.res.end();
 		}
 
 		if (request.text.includes('"')) {
-			var words = request.text.split();
-			var quotifiedString = "";
-			words.forEach(word => {
-				if (Math.random() > 0.25) {
-					quotifiedString += '"' + word + '" ';
-				}
-				else {
-					quotifiedString += word;
-				}
-			});
-			body.text = quotifiedString;
+			body.text = quotify(request.text);
 			this.res.writeHead(200);
 			postMessage();
 			this.res.end();
@@ -85,6 +70,30 @@ function respond() {
 
 function getRandomIndex(arr) {
 	return Math.floor(Math.random() * arr.length);
+}
+
+function quotify(string, amount) {
+	var words = string.split();
+	var quotifiedString = "";
+	words.forEach(word => {
+		if (Math.random() > amount) {
+			quotifiedString += '"' + word + '" ';
+		}
+		else {
+			quotifiedString += word;
+		}
+	});
+	return quotifiedString;
+}
+
+function hardlyKnowHer(string) {
+	var words = string.split();
+	words.forEach(word => {
+		if (word.includes("er")) {
+			return word[0].toUpperCase() + word.substring(1, word.length - 2) + " her?  I hardly know her!";
+		}
+	});
+	return "";
 }
 
 function postMessage() {
