@@ -2,6 +2,9 @@
   "name": "Jake's Bot",
   "description": "Jake's AI replacement",
   "repository": "https://github.com/TheBiggestOfBoys/bot-tutorial-nodejs",
-  "logo": "http://www.tailgate365.com/wp-content/uploads/2011/06/tom-hanks-906.jpg",
-  "keywords": []
+  "logo": "https://cdn.mos.cms.futurecdn.net/gon65SMMrCEbYAzuZ7opPD.jpg",
+  "keywords": [
+    "groupme",
+    "chatbot"
+  ]
 }
