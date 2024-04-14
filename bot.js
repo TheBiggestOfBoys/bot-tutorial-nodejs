@@ -57,26 +57,28 @@ const activationPhrase = "Activate that sucka!";
 function respond() {
   var request = JSON.parse(this.req.chunks[0]);
 
-  if (request.text && request.text === activationPhrase) {
-    body.text = quotes[getRandomIndex(quotes)];
-    this.res.writeHead(200);
-    postMessage();
-    this.res.end();
-  }
+	if (request.text) {
+		if (request.text === activationPhrase) {
+			body.text = quotes[getRandomIndex(quotes)];
+			this.res.writeHead(200);
+			postMessage();
+			this.res.end();
+		}
 
-  if (request.text && request.text.includes("er")) {
-    body.text = hardlyKnowHer(request.text);
-    this.res.writeHead(200);
-    postMessage();
-    this.res.end();
-  }
+		if (request.text.includes("er")) {
+			body.text = hardlyKnowHer(request.text);
+			this.res.writeHead(200);
+			postMessage();
+			this.res.end();
+		}
 
-  if (request.text && request.text.includes('"')) {
-    body.text = quotify(request.text);
-    this.res.writeHead(200);
-    postMessage();
-    this.res.end();
-  }
+		if (request.text.includes('"')) {
+			body.text = quotify(request.text);
+			this.res.writeHead(200);
+			postMessage();
+			this.res.end();
+		}
+	}
 }
 
 function getRandomIndex(arr) {
