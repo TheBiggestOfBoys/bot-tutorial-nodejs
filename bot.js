@@ -37,14 +37,30 @@ const quotes = [
 	"**VINE BOOM SOUND EFFECT**",
 	"Otis.png",
 	"RIP [RËDÁÇTÊD] Week",
+	"Let me get uh...",
+	"Never forget The Alamo",
+	"Tavin: (zooms in on crotch)",
+	"Biggy Mike",
+	"Let me be clear",
+	"Let me be Frank",
+	"Your mind is to creamy in the gutter",
+	"@Sully..., @Sully...",
+	"Giga gadee gida gida ooh",
+	"@Dan Bot, pull up",
+	"All my homies hate @Dan Bot",
+	"Sammy 2 Sucks!",
+	"Owen is the Drizzler",
+	"Cannibal Sam O'Hare",
+	"Everywhere I look I see Dorbees!",
+	"🍺💪🏼🐶 ROOT BEER!!!",
+	"Hip-hip!",
+	"@Tavin Reeves : 🩳📸👀",
 ];
-
-const activationPhrase = "Activate that sucka!";
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text && request.text === activationPhrase) {
+	if (request.text && Math.random() > 0.75) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
