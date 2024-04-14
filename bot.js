@@ -10,11 +10,7 @@ const options = {
 
 var body = {
 	bot_id: botID,
-	text: "",
-	attachments: {
-		type: "image",
-		url: ""
-	}
+	text: ""
 };
 
 const quotes = [
@@ -43,51 +39,44 @@ const quotes = [
 	"RIP [RËDÁÇTÊD] Week",
 ];
 
-const imageURLs = [
-	"https://i.groupme.com/1080x1079.jpeg.e08faeb0a4bb4068b458a3f63994a842.large",
-	"https://i.groupme.com/750x650.png.8874165939864b6b9d26ad5e918dcd0d.large",
-	"https://i.groupme.com/375x666.jpeg.6bef1d29066e4ace89ad056a551eceb5.large",
-	"https://i.groupme.com/720x1280.jpeg.017a0936855f4703b73bb28cc2d974a3.large",
-	"https://i.groupme.com/433x577.jpeg.6347f72c4ce0467998beb54f9460bd77.large",
-	"https://i.groupme.com/3024x4032.jpeg.c6f14d8fa5b44c30b0bbb031b3634751.large",
-];
-
 const activationPhrase = "Activate that sucka!";
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text && request.text === activationPhrase) {
-		this.res.writeHead(200);
-		postMessage(quotes[getRandomIndex(quotes)]);
-		this.res.end();
-	}
+	if (request.text) {
+		if (request.text === activationPhrase) {
+			this.res.writeHead(200);
+			postMessage(quotes[getRandomIndex(quotes)]);
+			this.res.end();
+		}
 
-	if (request.text && request.text.includes("er")) {
-		var words = request.text.split(' ');
-		words.forEach(word => {
-			if (word.includes("er")) {
-				this.res.writeHead(200);
-				postMessage(word[0].toUpperCase() + word.substring(1, word.length - 2) + " her?  I hardly know her!");
-				this.res.end();
-			}
-		});
-	}
+		if (request.text.includes("er")) {
+			var words = request.text.split();
+			words.forEach(word => {
+				if (word.includes("er")) {
+					this.res.writeHead(200);
+					postMessage(word[0].toUpperCase() + word.substring(1, word.length - 2) + " her?  I hardly know her!");
+					this.res.end();
+				}
+			});
+		}
 
-	if (request.text && request.text.includes('"')) {
-		var words = request.text.split(' ');
-		var quotifiedString = "";
-		words.forEach(word => {
-			if (Math.random() > 0.25) {
-				quotifiedString += '"' + word + '" ';
-			}
-			else {
-				quotifiedString += word;
-			}
-		});
-		this.res.writeHead(200);
-		postMessage(quotifiedString);
-		this.res.end();
+		if (request.text.includes('"')) {
+			var words = request.text.split();
+			var quotifiedString = "";
+			words.forEach(word => {
+				if (Math.random() > 0.25) {
+					quotifiedString += '"' + word + '" ';
+				}
+				else {
+					quotifiedString += word;
+				}
+			});
+			this.res.writeHead(200);
+			postMessage(quotifiedString);
+			this.res.end();
+		}
 	}
 }
 
@@ -96,10 +85,7 @@ function getRandomIndex(arr) {
 }
 
 function postMessage(text) {
-	//var imageURL = imageURLs[getRandomIndex(imageURLs)];
-
 	body.text = text;
-	//body.attachments.url = imageURL;
 
 	console.log('sending ' + text + ' to ' + botID);
 
