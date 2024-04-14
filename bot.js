@@ -68,7 +68,7 @@ function respond() {
 		words.forEach(word => {
 			if (word.includes("er")) {
 				this.res.writeHead(200);
-				postMessage(word[0].upper() + word.substring(1, word.length - 2) + "her?  I hardly know her!");
+				postMessage(word[0].toUpperCase() + word.substring(1, word.length - 2) + " her?  I hardly know her!");
 				this.res.end();
 			}
 		});
