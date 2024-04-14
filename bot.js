@@ -46,8 +46,9 @@ function respond() {
 
 	if (request.text) {
 		if (request.text === activationPhrase) {
+			body.text = quotes[getRandomIndex(quotes)];
 			this.res.writeHead(200);
-			postMessage(quotes[getRandomIndex(quotes)]);
+			postMessage();
 			this.res.end();
 		}
 
@@ -55,8 +56,9 @@ function respond() {
 			var words = request.text.split();
 			words.forEach(word => {
 				if (word.includes("er")) {
+					body.text = word[0].toUpperCase() + word.substring(1, word.length - 2) + " her?  I hardly know her!";
 					this.res.writeHead(200);
-					postMessage(word[0].toUpperCase() + word.substring(1, word.length - 2) + " her?  I hardly know her!");
+					postMessage();
 					this.res.end();
 				}
 			});
@@ -73,8 +75,9 @@ function respond() {
 					quotifiedString += word;
 				}
 			});
+			body.text = quotifiedString;
 			this.res.writeHead(200);
-			postMessage(quotifiedString);
+			postMessage();
 			this.res.end();
 		}
 	}
@@ -84,10 +87,8 @@ function getRandomIndex(arr) {
 	return Math.floor(Math.random() * arr.length);
 }
 
-function postMessage(text) {
-	body.text = text;
-
-	console.log('sending ' + text + ' to ' + botID);
+function postMessage() {
+	console.log('sending ' + body.text + ' to ' + botID);
 
 	var botReq = HTTPS.request(options, function (res) {
 		if (res.statusCode != 202) {
