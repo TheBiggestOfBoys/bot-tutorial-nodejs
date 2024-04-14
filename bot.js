@@ -43,38 +43,36 @@ var randomMessage = false;
 var shouldKnowHer = false;
 var shouldQuotify = false;
 
-var requestText;
+var requestText = "";
 
 const activationPhrase = "Activate that sucka!";
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text) {
-		if (request.text === activationPhrase) {
-			randomMessage = true;
-			this.res.writeHead(200);
-			postMessage();
-			this.res.end();
-			randomMessage = false;
-		}
+	if (request.text && request.text === activationPhrase) {
+		randomMessage = true;
+		this.res.writeHead(200);
+		postMessage();
+		this.res.end();
+		randomMessage = false;
+	}
 
-		if (request.text.includes("er")) {
-			shouldKnowHer = true;
-			requestText = request.text;
-			this.res.writeHead(200);
-			postMessage();
-			this.res.end();
-			shouldKnowHer = true;
-		}
+	if (request.text && request.text.includes("er")) {
+		shouldKnowHer = true;
+		requestText = request.text;
+		this.res.writeHead(200);
+		postMessage();
+		this.res.end();
+		shouldKnowHer = true;
+	}
 
-		if (request.text.includes('"')) {
-			shouldQuotify = true;
-			this.res.writeHead(200);
-			postMessage();
-			this.res.end();
-			shouldQuotify = false;
-		}
+	if (request.text && request.text.includes('"')) {
+		shouldQuotify = true;
+		this.res.writeHead(200);
+		postMessage();
+		this.res.end();
+		shouldQuotify = false;
 	}
 }
 
