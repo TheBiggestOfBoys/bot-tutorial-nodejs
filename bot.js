@@ -39,6 +39,12 @@ const quotes = [
 	"RIP [RËDÁÇTÊD] Week",
 ];
 
+var randomMessage = false;
+var shouldKnowHer = false;
+var shouldQuotify = false;
+
+var requestText;
+
 const activationPhrase = "Activate that sucka!";
 
 function respond() {
@@ -46,24 +52,28 @@ function respond() {
 
 	if (request.text) {
 		if (request.text === activationPhrase) {
-			body.text = quotes[getRandomIndex(quotes)];
+			randomMessage = true;
 			this.res.writeHead(200);
 			postMessage();
 			this.res.end();
+			randomMessage = false;
 		}
 
 		if (request.text.includes("er")) {
-			body.text = hardlyKnowHer(request.text);
+			shouldKnowHer = true;
+			requestText = request.text;
 			this.res.writeHead(200);
 			postMessage();
 			this.res.end();
+			shouldKnowHer = true;
 		}
 
 		if (request.text.includes('"')) {
-			body.text = quotify(request.text);
+			shouldQuotify = true;
 			this.res.writeHead(200);
 			postMessage();
 			this.res.end();
+			shouldQuotify = false;
 		}
 	}
 }
@@ -97,6 +107,19 @@ function hardlyKnowHer(string) {
 }
 
 function postMessage() {
+	if (randomMessage) {
+		body.text = quotes[getRandomIndex(quotes)];
+	}
+	else if (shouldKnowHer) {
+		body.text = hardlyKnowHer(requestText);
+	}
+	else if (shouldQuotify) {
+		body.text = quotify(requestText);
+	}
+	else {
+		body.text = "PLACEHOLDER MESSAGE";
+	}
+
 	console.log('sending ' + body.text + ' to ' + botID);
 
 	var botReq = HTTPS.request(options, function (res) {
