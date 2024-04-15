@@ -55,12 +55,16 @@ const quotes = [
 	"🍺💪🏼🐶 ROOT BEER!!!",
 	"Hip-hip!",
 	"@Tavin Reeves : 🩳📸👀",
+ "[INSERT SPAM MESSAGE]",
+ "[INSERT MESSAGE]",
+ "Y'all spam more than me tbh",
+ "John, Blume & Colin's bots are mid",
 ];
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text && Math.random() > 0.75) {
+	if (request.text && Math.random() > 0.95) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
