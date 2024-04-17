@@ -55,16 +55,31 @@ const quotes = [
 	"🍺💪🏼🐶 ROOT BEER!!!",
 	"Hip-hip!",
 	"@Tavin Reeves : 🩳📸👀",
- "[INSERT SPAM MESSAGE]",
- "[INSERT MESSAGE]",
- "Y'all spam more than me tbh",
- "John, Blume & Colin's bots are mid",
+	"[INSERT SPAM MESSAGE]",
+ 	"[INSERT MESSAGE]",
+	"Y'all spam more than me tbh",
+	"John, Blume & Colin's bots are mid",
+	"@Josh Benson : 🍑🌳🏙️",
+	"@Colin Davis : 🖐️🤠🤚",
+	"Boy did I open the wrong door...",
+	"@Jake Scott : 👨‍💻🤽‍♂️🤓",
+	"I wanna be grown up, I'm not a kid no more, I was when I was four, but that was long ago!",
+	"Jake I love you, but your week sucked! - @Elijah Ladd",
+	"Michelle, uh...",
+	"Tavin_sphere.png",
+	"Josh_crying.jpg",
+	"FBI Leaks.pdf",
+	"@Sam Mauer : 📰✍️🤥",
+	"LTB",
+	"Penthouse... more like... REPENThouse",
+	"Yeah",
+	"Mama I'm a criminal",
 ];
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text && Math.random() > 0.95) {
+	if (request.text && Math.random() > 0.9) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();

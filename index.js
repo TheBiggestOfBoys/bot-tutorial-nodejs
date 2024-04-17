@@ -1,17 +1,15 @@
-var http, director, bot, router, server, port;
+var http = require('http');
+var director = require('director');
+var bot = require('./bot.js');
 
-http = require('http');
-director = require('director');
-bot = require('./bot.js');
-
-router = new director.http.Router({
+var router = new director.http.Router({
 	'/': {
 		post: bot.respond,
 		get: ping
 	}
 });
 
-server = http.createServer(function (req, res) {
+var server = http.createServer(function (req, res) {
 	req.chunks = [];
 	req.on('data', function (chunk) {
 		req.chunks.push(chunk.toString());
@@ -23,7 +21,7 @@ server = http.createServer(function (req, res) {
 	});
 });
 
-port = Number(process.env.PORT || 5000);
+var port = Number(process.env.PORT || 5000);
 server.listen(port);
 
 function ping() {
