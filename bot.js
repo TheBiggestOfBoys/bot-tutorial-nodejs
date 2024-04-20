@@ -73,7 +73,7 @@ const quotes = [
 	"LTB",
 	"Penthouse... more like... REPENThouse",
 	"Yeah",
-	"Mama I'm a criminal",
+	"Mama I'm a criminal",     "https://youtube.com/shorts/lfDdP93GM3k?si=MudB-7tGL1oD0LAL",
 ];
 
 function respond() {
