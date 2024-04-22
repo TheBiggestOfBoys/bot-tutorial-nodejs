@@ -37,38 +37,49 @@ const quotes = [
 	"**VINE BOOM SOUND EFFECT**",
 	"Otis.png",
 	"RIP [RËDÁÇTÊD] Week",
+	"Let me get uh...",
+	"Never forget The Alamo",
+	"Tavin: (zooms in on crotch)",
+	"Biggy Mike",
+	"Let me be clear",
+	"Let me be Frank",
+	"Your mind is to creamy in the gutter",
+	"@Sully..., @Sully...",
+	"Giga gadee gida gida ooh",
+	"@Dan Bot, pull up",
+	"All my homies hate @Dan Bot",
+	"Sammy 2 Sucks!",
+	"Owen is the Drizzler",
+	"Cannibal Sam O'Hare",
+	"Everywhere I look I see Dorbees!",
+	"🍺💪🏼🐶 ROOT BEER!!!",
+	"Hip-hip!",
+	"@Tavin Reeves : 🩳📸👀",
+	"[INSERT SPAM MESSAGE]",
+ 	"[INSERT MESSAGE]",
+	"Y'all spam more than me tbh",
+	"John, Blume & Colin's bots are mid",
+	"@Josh Benson : 🍑🌳🏙️",
+	"@Colin Davis : 🖐️🤠🤚",
+	"Boy did I open the wrong door...",
+	"@Jake Scott : 👨‍💻🤽‍♂️🤓",
+	"I wanna be grown up, I'm not a kid no more, I was when I was four, but that was long ago!",
+	"Jake I love you, but your week sucked! - @Elijah Ladd",
+	"Michelle, uh...",
+	"Tavin_sphere.png",
+	"Josh_crying.jpg",
+	"FBI Leaks.pdf",
+	"@Sam Mauer : 📰✍️🤥",
+	"LTB",
+	"Penthouse... more like... REPENThouse",
+	"Yeah",
+	"Mama I'm a criminal",     "https://youtube.com/shorts/lfDdP93GM3k?si=MudB-7tGL1oD0LAL",
 ];
-
-var randomMessage = false;
-var shouldKnowHer = false;
-var shouldQuotify = false;
-
-var requestText = "";
-
-const activationPhrase = "Activate that sucka!";
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text && request.text === activationPhrase) {
-		randomMessage = true;
-		this.res.writeHead(200);
-		postMessage();
-		this.res.end();
-		randomMessage = false;
-	}
-
-	if (request.text && request.text.includes("er")) {
-		shouldKnowHer = true;
-		requestText = request.text;
-		this.res.writeHead(200);
-		postMessage();
-		this.res.end();
-		shouldKnowHer = true;
-	}
-
-	if (request.text && request.text.includes('"')) {
-		shouldQuotify = true;
+	if (request.text && Math.random() > 0.9) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
@@ -80,43 +91,8 @@ function getRandomIndex(arr) {
 	return Math.floor(Math.random() * arr.length);
 }
 
-function quotify(string, amount) {
-	var words = string.split();
-	var quotifiedString = "";
-	words.forEach(word => {
-		if (Math.random() > amount) {
-			quotifiedString += '"' + word + '" ';
-		}
-		else {
-			quotifiedString += word;
-		}
-	});
-	return quotifiedString;
-}
-
-function hardlyKnowHer(string) {
-	var words = string.split();
-	words.forEach(word => {
-		if (word.includes("er")) {
-			return word[0].toUpperCase() + word.substring(1, word.length - 2) + " her?  I hardly know her!";
-		}
-	});
-	return "";
-}
-
 function postMessage() {
-	if (randomMessage) {
-		body.text = quotes[getRandomIndex(quotes)];
-	}
-	else if (shouldKnowHer) {
-		body.text = hardlyKnowHer(requestText);
-	}
-	else if (shouldQuotify) {
-		body.text = quotify(requestText);
-	}
-	else {
-		body.text = "PLACEHOLDER MESSAGE";
-	}
+	body.text = quotes[getRandomIndex(quotes)];
 
 	console.log('sending ' + body.text + ' to ' + botID);
 
