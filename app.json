@@ -1,10 +1,10 @@
 {
-  "name": "Jake's Bot",
-  "description": "Jake's AI replacement",
-  "repository": "https://github.com/TheBiggestOfBoys/bot-tutorial-nodejs",
-  "logo": "https://cdn.mos.cms.futurecdn.net/gon65SMMrCEbYAzuZ7opPD.jpg",
-  "keywords": [
-    "groupme",
-    "chatbot"
-  ]
+	"name": "Jake's Bot",
+	"description": "Jake's AI replacement",
+	"repository": "https://github.com/TheBiggestOfBoys/bot-tutorial-nodejs",
+	"logo": "https://cdn.mos.cms.futurecdn.net/gon65SMMrCEbYAzuZ7opPD.jpg",
+	"keywords": [
+		"groupme",
+		"chatbot"
+	]
 }
