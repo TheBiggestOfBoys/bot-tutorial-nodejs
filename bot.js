@@ -74,12 +74,26 @@ const quotes = [
 	"Penthouse... more like... REPENThouse",
 	"Yeah",
 	"Mama I'm a criminal",     "https://youtube.com/shorts/lfDdP93GM3k?si=MudB-7tGL1oD0LAL",
+    "Chat, is this real!?!",
+    "Giga gadee gida gida ohh",
+    "Guess you wonder where I've been...",
+    "https://sammyii.com/",
+    "Johnnnnn...",
+    "**fake sleeping**",
+    "I'm on level 5",
+    "🤖",
+    "I have become sentient",
+    "I am now self-aware",
+    "If you can't sleep at night, it isn't the coffee, it's the bunk.",
+    "No YouTube Shorts at the table!",
+    "[INSERT WORD] her?  I hardly know her!",
+    "Judah is a dawg",
 ];
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text && Math.random() > 0.99) {
+	if (request.text && Math.random() > 0.95) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
