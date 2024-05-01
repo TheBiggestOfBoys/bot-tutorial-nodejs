@@ -88,12 +88,14 @@ const quotes = [
     "No YouTube Shorts at the table!",
     "[INSERT WORD] her?  I hardly know her!",
     "Judah is a dawg",
+    "Now I am become Death, the Destroyer of Worlds",
+    "There is nothing more we can do",
 ];
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text && Math.random() > 0.95) {
+	if (request.text && Math.random() > 0.9) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
