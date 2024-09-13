@@ -95,7 +95,7 @@ const quotes = [
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if (request.text && Math.random() > 0.9) {
+	if ((request.text && Math.random() > 0.9) || (request.text == "Activate that sucka!")) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
