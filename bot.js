@@ -157,7 +157,7 @@ function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 	console.log(request);
 
-	if (request.text && Math.random() > 0.9) {
+	if ((request.text && Math.random() > 0.9) || (request.text == '\u200B')) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
