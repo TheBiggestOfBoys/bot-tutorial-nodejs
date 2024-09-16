@@ -25,12 +25,19 @@ var body = {
 };
 
 function respond() {
-	var request = JSON.parse(this.req.chunks[0]);
-	console.log(request);
+	try {
+		var request = JSON.parse(this.req.chunks[0]);
+		console.log(request);
 
-	if ((request.text && Math.random() > 0.95) || (request.text == "HeIIo")) {
-		this.res.writeHead(200);
-		postMessage();
+		if ((request.text && Math.random() > 0.95) || (request.text == "HeIIo")) {
+			this.res.writeHead(200);
+			postMessage();
+			this.res.end();
+		}
+	}
+	catch (error) {
+		console.error('Error parsing request:', error);
+		this.res.writeHead(400);
 		this.res.end();
 	}
 }
