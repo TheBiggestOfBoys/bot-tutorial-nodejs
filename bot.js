@@ -1,5 +1,7 @@
-import { quotes } from './quotes';
-import { imageURLs } from './imageURLs';
+import quotes from './quotes';
+import imageURLs from './imageURLs';
+import gifURLs from './gifURLs';
+import videoURLs from './videoURLs';
 
 var HTTPS = require('https');
 
@@ -26,7 +28,7 @@ function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 	console.log(request);
 
-	if ((request.text && Math.random() > 0.9) || (request.text == "HeIIo")) {
+	if ((request.text && Math.random() > 0.95) || (request.text == "HeIIo")) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
@@ -44,7 +46,15 @@ function postMessage() {
 		body.text = quotes[getRandomIndex(quotes)];
 	}
 	else {
-		body.attachments[0].url = imageURLs[getRandomIndex(imageURLs)];
+		if (randomValue < 0.7) {
+			body.attachments[0].url = imageURLs[getRandomIndex(imageURLs)];
+		}
+		else if (randomValue < 0.85) {
+			body.attachments[0].url = gifURLs[getRandomIndex(gifURLs)];
+		}
+		else {
+			body.attachments[0].url = videoURLs[getRandomIndex(videoURLs)];
+		}
 	}
 
 	console.log(body);
