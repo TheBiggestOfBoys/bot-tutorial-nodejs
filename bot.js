@@ -90,6 +90,7 @@ const quotes = [
     "Judah is a dawg",
     "Now I am become Death, the Destroyer of Worlds",
     "There is nothing more we can do",
+   "I'm not sick, I'm not weak, I'm not cringe"
 ];
 
 function respond() {
