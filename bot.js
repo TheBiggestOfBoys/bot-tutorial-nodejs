@@ -90,13 +90,17 @@ const quotes = [
     "Judah is a dawg",
     "Now I am become Death, the Destroyer of Worlds",
     "There is nothing more we can do",
-   "I'm not sick, I'm not weak, I'm not cringe"
+   "I'm not sick, I'm not weak, I'm not cringe",
+    "Love the Brotherhood!",
+    "Are you rushing?  Or are you dragging?",
+    "Fine, I'll do it myself",
+    "Hip-hip!"
 ];
 
 function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 
-	if ((request.text && Math.random() > 0.9) || (request.text == "Activate that sucka!")) {
+	if ((request.text && Math.random() > 0.9)) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
