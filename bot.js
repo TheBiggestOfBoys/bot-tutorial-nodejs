@@ -26,7 +26,6 @@ const quotes = [
 	"Ok buster",
 	"In this world you either milk or get milked, and baby, I'm the cow.",
 	"All [REDACTED] Week ever was, was me sitting in the DC drinking milk, in a funny outfit.",
-	"Tavin Reeves likes crotch shots.",
 	"Uhhhh, yeah",
 	"That's right!",
 	"So true!",
@@ -35,13 +34,19 @@ const quotes = [
 	"🗿",
 	"☝️🤓",
 	"☝️🤓 Erhm, akshulally",
+	"🍺💪🏼🐶 ROOT BEER!!!",
+	"🤖",
+	"🫃",
+	"✝️🐍🪠",
+	"Anyone else remeber deflate gate?",
+	"Da Bears 🐻",
+	"How 'bout dem Bengals 🐯",
 	"You can save by bundling Home & Auto",
 	"[RËDÁÇTÊD]",
 	"Hello, I'm Jake",
 	"Look at me, I'm Jake, I'm so tall and cool and attractive",
 	"bruh",
-	"**VINE BOOM SOUND EFFECT**",
-	"Otis.png",
+	"🔊 VINE BOOM SOUND EFFECT ",
 	"RIP [RËDÁÇTÊD] Week",
 	"Let me get uh...",
 	"Never forget The Alamo",
@@ -52,38 +57,35 @@ const quotes = [
 	"Your mind is to creamy in the gutter",
 	"@Sully..., @Sully...",
 	"Giga gadee gida gida ooh",
-	"@Dan Bot, pull up",
-	"All my homies hate @Dan Bot",
+	"@Bot Dan, pull up",
+	"All my homies hate @Bot Dan",
 	"Sammy 2 Sucks!",
 	"Owen is the Drizzler",
 	"Cannibal Sam O'Hare",
 	"Everywhere I look I see Dorbees!",
-	"🍺💪🏼🐶 ROOT BEER!!!",
 	"Hip-hip!",
-	"@Tavin Reeves : 🩳📸👀",
 	"[INSERT SPAM MESSAGE]",
 	"[INSERT MESSAGE]",
 	"Y'all spam more than me tbh",
 	"John, Blume & Colin's bots are mid",
-	"@Josh Benson : 🍑🌳🏙️",
-	"@Colin Davis : 🖐️🤠🤚",
 	"Boy did I open the wrong door...",
-	"@Jake Scott : 👨‍💻🤽‍♂️🤓",
 	"I wanna be grown up, I'm not a kid no more, I was when I was four, but that was long ago!",
 	"Jake I love you, but your week sucked! - @Elijah Ladd",
 	"Michelle, uh...",
-	"Tavin_sphere.png",
-	"Josh_crying.jpg",
-	"FBI Leaks.pdf",
-	"@Sam Mauer : 📰✍️🤥",
 	"LTB",
 	"Penthouse... more like... REPENThouse",
 	"Yeah",
 	"Mama I'm a criminal",
 	"https://youtube.com/shorts/lfDdP93GM3k?si=MudB-7tGL1oD0LAL",
+	"https://foundationevent.com/",
 	"I'm feelin' MAD stuffy rn",
 	"O'Drizzly...",
 	"Hey @Peter",
+	"@Nick Cavey has brainrot",
+	"This post was fact-checked by real American patriots!",
+	"🚨 JAKE SHAKE INBOUND!!! 🚨",
+	"This guy's about to get Jake Shaked!",
+	"Gentlemen, @Josh Benson has been let go...",
 ];
 
 const imageURLs = [
@@ -196,7 +198,7 @@ function respond() {
 	var request = JSON.parse(this.req.chunks[0]);
 	console.log(request);
 
-	if ((request.text && Math.random() > 0.9) || (request.text == "HeIIo")) {
+	if (request.text && Math.random() > 0.9) {
 		this.res.writeHead(200);
 		postMessage();
 		this.res.end();
@@ -208,9 +210,7 @@ function getRandomIndex(arr) {
 }
 
 function postMessage() {
-	body.text = quotes[getRandomIndex(quotes)];
-	body.attachments[0].url = imageURLs[getRandomIndex(imageURLs)];
-
+	var randomValue = Math.random();
 	if (randomValue <= 0.5) {
 		body.text = quotes[getRandomIndex(quotes)];
 	}
