@@ -1,8 +1,8 @@
 const dotenv = require('dotenv');
 const axios = require('axios');
 const express = require('express');
-const { quotes, images, gifs, videos } = require('./data');
-const { NAME_TO_USER_ID, USER_ID_TO_NAME } = require('./user_ids');
+const { quotes, images, gifs, videos } = require('./data.mjs');
+const { NAME_TO_USER_ID, USER_ID_TO_NAME } = require('./user_ids.mjs');
 
 dotenv.config();
 
