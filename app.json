@@ -1,7 +1,13 @@
 {
 	"name": "Jake's Bot",
-	"description": "Jake's AI replacement",
+	"description": "Jake's robot replacement",
 	"repository": "https://github.com/TheBiggestOfBoys/bot-tutorial-nodejs",
-	"logo": "http://www.tailgate365.com/wp-content/uploads/2011/06/tom-hanks-906.jpg",
-	"keywords": []
+	"logo": "https://i.groupme.com/500x960.jpeg.b693bc1f971b43a483a6685042a2c282",
+	"keywords": [
+		"heroku",
+		"nodejs",
+		"express",
+		"groupme",
+		"bot"
+	]
 }

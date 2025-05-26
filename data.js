@@ -289,8 +289,43 @@ const gifs = [
 ];
 
 const videos = [
-    "https://v.groupme.com/25731142/2024-12-03T21:45:33Z/606a8ddf.1920x1080r0.mp4",
-    "https://v.groupme.com/25731142/2024-11-24T19:12:50Z/52643fcc.640x1138r0.mp4"
+	"https://v.groupme.com/25731142/2024-12-03T21:45:33Z/606a8ddf.1920x1080r0.mp4",
+	"https://v.groupme.com/25731142/2024-11-24T19:12:50Z/52643fcc.640x1138r0.mp4"
 ];
 
-module.exports = { quotes, images, gifs, videos };
+const documents = [
+	{
+		url: "https://group.me/3z7S1XK3wN93E0",
+		title: "On Growth at Taylor"
+	},
+];
+
+const locations = [
+	{
+		name: "Taylor University",
+		lat: 40.45603565214627,
+		lng: -85.49879579624246
+	},
+	{
+		name: "Samuel Morris Hall",
+		lat: 40.45859599925177,
+		lng: -85.49506431005503
+	},
+	{
+		name: "A&W Restaurant",
+		lat: 40.21807041836297,
+		lng: -85.40173333293421
+	},
+	{
+		name: "The Great Wall of Peachtree City",
+		lat: 333.44648665185361,
+		lng: -84.57789610736965
+	},
+	{
+		name: "Cincinnati",
+		lat: 39.10364353333965,
+		lng: -84.51732900443602
+	}
+];
+
+module.exports = { quotes, images, gifs, videos, documents, locations };

@@ -1,7 +1,24 @@
+//#region Header & Config
+/**
+ * GroupMe Bot Server
+ * ------------------
+ * Responds to GroupMe messages with random quotes, media, documents, locations, or user callouts.
+ * 
+ * Features:
+ * - Randomly replies to messages (50% chance).
+ * - Replies may include a quote, media (image/gif/video), document, or location.
+ * - Occasionally tags the user and "calls them out" (8% chance), in which case only the callout is sent.
+ * - Can mention users and reply to specific messages.
+ * 
+ * Environment Variables:
+ * - BOT_ID: The GroupMe Bot ID (required).
+ * - PORT: The port to run the server on (default: 5000).
+ */
+
 const dotenv = require('dotenv');
 const axios = require('axios');
 const express = require('express');
-const { quotes, images, gifs, videos } = require('./data');
+const { quotes, images, gifs, videos, documents, locations } = require('./data');
 const { NAME_TO_USER_ID, USER_ID_TO_NAME } = require('./user_ids');
 
 dotenv.config();
@@ -10,25 +27,57 @@ const BOT_ID = process.env.BOT_ID;
 const PORT = process.env.PORT || 5000;
 const MEDIA_TYPES = ['images', 'gifs', 'videos'];
 
+// Probability settings
+const RESPONSE_PROBABILITY = parseFloat(process.env.RESPONSE_PROBABILITY) || 0.5;      // Chance to respond to a message
+const CALLOUT_PROBABILITY = parseFloat(process.env.CALLOUT_PROBABILITY) || 0.08;       // Chance to call out a user
+const INCLUDE_TEXT_PROBABILITY = parseFloat(process.env.INCLUDE_TEXT_PROBABILITY) || 0.5;   // Chance to include text
+const INCLUDE_MEDIA_PROBABILITY = parseFloat(process.env.INCLUDE_MEDIA_PROBABILITY) || 0.5; // Chance to include media
+const INCLUDE_MENTION_PROBABILITY = parseFloat(process.env.INCLUDE_MENTION_PROBABILITY) || 0.5; // Chance to mention user
+const DOCUMENT_PROBABILITY = parseFloat(process.env.DOCUMENT_PROBABILITY) || 0.07;     // Chance to include a document
+const LOCATION_PROBABILITY = parseFloat(process.env.LOCATION_PROBABILITY) || 0.07;     // Chance to include a location
+
 const app = express();
 app.use(express.json());
+//#endregion
 
-// Utility Functions
+//#region Utility Functions
+/**
+ * Returns a random element from an array.
+ * @param {Array} arr 
+ * @returns {*} Random element
+ */
 function getRandom(arr) {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
 
+/**
+ * Returns a random media URL of the given type.
+ * @param {'images'|'gifs'|'videos'} type 
+ * @returns {string|null} Media URL
+ */
 function getRandomMedia(type) {
 	if (type === 'images') return getRandom(images);
 	if (type === 'gifs') return getRandom(gifs);
 	if (type === 'videos') return getRandom(videos);
 	return null;
 }
+//#endregion
 
-async function sendMessage({ text = null, image_url = null, video_url = null, user_id = null, reply_id = null }) {
+//#region Message Sending
+/**
+ * Sends a message to GroupMe using the bot API.
+ * @param {Object} options
+ * @param {string|null} options.text - The message text.
+ * @param {string|null} options.image_url - Image URL to attach.
+ * @param {string|null} options.video_url - Video URL to attach.
+ * @param {string|null} options.user_id - User ID to mention.
+ * @param {string|null} options.reply_id - Message ID to reply to.
+ * @param {Array|null} options.extra_attachments - Additional attachments (e.g., document, location).
+ */
+async function sendMessage({ text = null, image_url = null, video_url = null, user_id = null, reply_id = null, extra_attachments = null }) {
 	const GROUPME_POST_URL = 'https://api.groupme.com/v3/bots/post';
 
-	if (!text && !image_url && !video_url) {
+	if (!text && !image_url && !video_url && (!extra_attachments || extra_attachments.length === 0)) {
 		console.warn("sendMessage called with no content. Aborting send.");
 		return null;
 	}
@@ -36,15 +85,18 @@ async function sendMessage({ text = null, image_url = null, video_url = null, us
 	const payload = { bot_id: BOT_ID, text: text || "" };
 	const attachments = [];
 
+	// Attach image
 	if (image_url) {
 		attachments.push({ type: 'image', url: image_url });
 	}
+	// Attach video (with preview if possible)
 	if (video_url) {
 		if (video_url.endsWith('.mp4')) {
 			const preview_url = video_url.slice(0, -3) + 'jpg';
 			attachments.push({ type: 'video', url: video_url, preview_url });
 		}
 	}
+	// Mention user (if not a callout)
 	if (user_id) {
 		const user_name = USER_ID_TO_NAME[user_id] || "user";
 		const mention_text = `@${user_name}`;
@@ -55,12 +107,17 @@ async function sendMessage({ text = null, image_url = null, video_url = null, us
 			loci: [[0, mention_text.length]]
 		});
 	}
+	// Reply to a message
 	if (reply_id) {
 		attachments.push({
 			type: "reply",
 			reply_id,
 			base_reply_id: reply_id
 		});
+	}
+	// Add any extra attachments (documents, locations, etc.)
+	if (extra_attachments && Array.isArray(extra_attachments)) {
+		attachments.push(...extra_attachments);
 	}
 	if (attachments.length > 0) {
 		payload.attachments = attachments;
@@ -75,8 +132,13 @@ async function sendMessage({ text = null, image_url = null, video_url = null, us
 		return null;
 	}
 }
+//#endregion
 
-// Main webhook endpoint for GroupMe callback
+//#region Webhook Endpoint
+/**
+ * Main webhook endpoint for GroupMe callback.
+ * Responds to incoming messages with random content or a callout.
+ */
 app.post('/callback', async (req, res) => {
 	const message = req.body;
 
@@ -85,54 +147,97 @@ app.post('/callback', async (req, res) => {
 		return res.sendStatus(200);
 	}
 
-	// Example: respond to a keyword or randomly
-	const shouldRespond = Math.random() < 0.5; // Adjust probability as needed
+	const shouldRespond = Math.random() < RESPONSE_PROBABILITY;
 	if (shouldRespond) {
-		let include_text = Math.random() < 0.5;
-		let include_media = Math.random() < 0.5;
-		let include_mention = Math.random() < 0.5;
+		let include_text = Math.random() < INCLUDE_TEXT_PROBABILITY;
+		let include_media = Math.random() < INCLUDE_MEDIA_PROBABILITY;
+		let include_mention = Math.random() < INCLUDE_MENTION_PROBABILITY;
+		let callout_user = Math.random() < CALLOUT_PROBABILITY;
 
+		// Ensure at least one of text or media is included
 		if (!include_text && !include_media) {
 			if (Math.random() < 0.5) include_text = true;
 			else include_media = true;
 		}
 
-		let text = null, image_url = null, video_url = null;
+		let text = null, image_url = null, video_url = null, attachments = [];
+		let called_out = false;
 
-		if (include_text) {
-			text = getRandom(quotes);
-		}
-		if (include_media) {
-			const media_type = getRandom(MEDIA_TYPES);
-			const media_url = getRandomMedia(media_type);
-			if (media_type === 'images' || media_type === 'gifs') {
-				image_url = media_url;
-			} else {
-				video_url = media_url;
+		if (callout_user && message.sender_id) {
+			// Tag the user and call them out (no other content)
+			const user_name = USER_ID_TO_NAME[message.sender_id] || "user";
+			text = `@${user_name}, I'm calling you out!`;
+			attachments.push({
+				type: "mentions",
+				user_ids: [message.sender_id],
+				loci: [[0, (`@${user_name}`).length]]
+			});
+			called_out = true;
+		} else {
+			// Normal random reply
+			if (include_text) {
+				text = getRandom(quotes);
+			}
+			if (include_media) {
+				const media_type = getRandom(MEDIA_TYPES);
+				const media_url = getRandomMedia(media_type);
+				if (media_type === 'images' || media_type === 'gifs') {
+					image_url = media_url;
+				} else {
+					video_url = media_url;
+				}
+			}
+			// Small chance to include a document
+			if (documents.length > 0 && Math.random() < DOCUMENT_PROBABILITY) {
+				const doc = getRandom(documents);
+				attachments.push({
+					type: "document",
+					url: doc.url,
+					title: doc.title
+				});
+			}
+			// Small chance to include a location
+			if (locations.length > 0 && Math.random() < LOCATION_PROBABILITY) {
+				const loc = getRandom(locations);
+				attachments.push({
+					type: "location",
+					name: loc.name,
+					lat: loc.lat,
+					lng: loc.lng
+				});
 			}
 		}
 
-		const mention_user_id = include_mention ? message.sender_id : null;
+		// Only mention user if not a callout
+		const mention_user_id = (!called_out && include_mention) ? message.sender_id : null;
 
-		if (text || image_url || video_url) {
+		if (text || image_url || video_url || attachments.length > 0) {
 			await sendMessage({
 				text,
 				image_url,
 				video_url,
 				user_id: mention_user_id,
-				reply_id: message.id
+				reply_id: message.id,
+				extra_attachments: attachments
 			});
 		}
 	}
-
 	res.sendStatus(200);
 });
+//#endregion
 
-// Health check endpoint
+//#region Health Check & Server Start
+/**
+ * Health check endpoint.
+ */
 app.get('/', (req, res) => {
 	res.send('Bot is running.');
 });
 
+/**
+ * Start the server.
+ */
 app.listen(PORT, () => {
 	console.log(`Bot server listening on port ${PORT}`);
 });
+//#endregion

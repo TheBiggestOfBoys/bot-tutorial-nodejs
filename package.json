@@ -1,5 +1,5 @@
 {
-	"name": "Jake's Bot",
+	"name": "jakesbot",
 	"version": "1.0.0",
 	"description": "Jake's robot replacement",
 	"main": "bot.js",
