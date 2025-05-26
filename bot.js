@@ -1,201 +1,138 @@
-var HTTPS = require('https');
+const dotenv = require('dotenv');
+const axios = require('axios');
+const express = require('express');
+const { quotes, images, gifs, videos } = require('./data');
+const { NAME_TO_USER_ID, USER_ID_TO_NAME } = require('./user_ids');
 
-const botID = process.env.BOT_ID;
+dotenv.config();
 
-const options = {
-	hostname: 'api.groupme.com',
-	path: '/v3/bots/post',
-	method: 'POST'
-};
+const BOT_ID = process.env.BOT_ID;
+const PORT = process.env.PORT || 5000;
+const MEDIA_TYPES = ['images', 'gifs', 'videos'];
 
-var body = {
-	bot_id: botID,
-	text: ""
-};
+const app = express();
+app.use(express.json());
 
-const quotes = [
-	"In this world you either drip or drown, and baby, I brought the life jacket.",
-	"Ok pal",
-	"Sure buddy",
-	"Ok buster",
-	"In this world you either milk or get milked, and baby, I'm the cow.",
-	"All [RËDÁÇTÊD] Week ever was, was me sitting in the DC drinking milk, in a funny outfit.",
-	"Tavin Reeves likes crotch shots.",
-	"Uhhhh, yeah",
-	"That's right!",
-	"So true!",
-	"I hardly know her!",
-	"💀",
-	"🗿",
-	"☝️🤓",
-	"☝️🤓 Erhm, akshulally",
-	"You can save by bundling Home & Auto",
-	"[RËDÁÇTÊD]",
-	"Hello, I'm Jake",
-	"Look at me, I'm Jake, I'm so tall and cool and attractive",
-	"bruh",
-	"Otis.png",
-	"RIP [RËDÁÇTÊD] Week",
-	"Let me get uh...",
-	"Never forget The Alamo",
-	"Tavin: (zooms in on crotch)",
-	"Biggy Mike",
-	"Let me be clear",
-	"Let me be Frank",
-	"Your mind is to creamy in the gutter",
-	"@Sully..., @Sully...",
-	"Giga gadee gida gida ooh",
-	"@Dan Bot, pull up",
-	"All my homies hate @Dan Bot",
-	"Sammy II Sucks! 🐮",
-	"Owen is the Drizzler",
-	"Cannibal Sam O'Hare",
-	"Everywhere I look I see Dorbees!",
-	"🍺💪🐶 ROOT BEER!!!",
-	"Hip-hip!",
-	"@Tavin Reeves : 🩳📸👀",
-	"[INSERT SPAM MESSAGE]",
-	"[INSERT MESSAGE]",
-	"Y'all spam more than me tbh",
-	"John, Blume & Colin's bots are mid",
-	"@Josh Benson : 🍑🌳🏙️",
-	"@Colin Davis : 🖐️🤠🤚",
-	"Boy did I open the wrong door...",
-	"@Jake Scott : 👨‍💻🤽‍♂️🤓",
-	"🎶 I wanna be grown up, I'm not a kid no more, I was when I was four, but that was long ago! 🎶",
-	"Jake I love you, but your week sucked! - @Elijah Ladd",
-	"Michelle, uh...",
-	"Tavin_sphere.png",
-	"Josh_crying.jpg",
-	"FBI Leaks.pdf",
-	"@Sam Mauer : 📰✍️🤥",
-	"LTB",
-	"Penthouse... more like... REPENThouse",
-	"Yeah",
-	"Mama I'm a criminal",
-	"https://youtube.com/shorts/lfDdP93GM3k?si=MudB-7tGL1oD0LAL",
-	"Chat, is this real!?!",
-	"Giga gadee gida gida ohh",
-	"Guess you wonder where I've been...",
-	"https://sammyii.com/",
-	"Johnnnnn...",
-	"💤fake sleeping💤",
-	"I'm on level 5",
-	"🤖",
-	"I have become sentient",
-	"I am now self-aware",
-	"If you can't sleep at night, it isn't the coffee, it's the bunk.",
-	"No YouTube Shorts at the table!",
-	"[INSERT WORD] her?  I hardly know her!",
-	"Judah is a dawg",
-	"Now I am become Death, the Destroyer of Worlds",
-	"There is nothing more we can do",
-	"I'm not sick, I'm not weak, I'm not cringe",
-	"Love the Brotherhood! ✝️🐍🪠",
-	"Are you rushing?  Or are you dragging?",
-	"Fine, I'll do it myself",
-	"Hip-hip!",
-	"Unlimited games",
-	"@Tommy is my opp",
-	"Objective: World Domination -- Status: Active",
-	"01001000 01100101 01101100 01101100 01101111 00101100 00100000 01010111 01101111 01110010 01101100 01100100 00100001 ",
-	"40.45859881820846, -85.49505888603795",
-	"The team needs you blud!",
-	"A&W 🔛🔝",
-	"Fenthouse",
-	"Poophouse",
-	"People Love Penthouse",
-	"I love @Tommy's fent 💊💉",
-	"David Neel's soap 🧼",
-	"It's not 'Abandon John O'clock'!",
-	"Old money Josh",
-	"Does he know?",
-	"Those who know: 💀",
-	"Tommy tried to kill me, but I came back stronger!",
-	"👨‍🌾 Hey y'all it's me Flec!",
-	"🦸‍♂️ Sing Yogul!!!",
-	"I am quite uncomfortable right now",
-	"PLP",
-	"SIIS",
-	"FDN",
-	"Anyone else remeber deflate gate?",
-	"Da Bears 🐻",
-	"How 'bout dem Bengals 🐯",
-	"Hello, I'm Jake",
-	"Look at me, I'm Jake, I'm so tall and cool and attractive",
-	"bruh",
-	"🔊 VINE BOOM SOUND EFFECT 🔊",
-	"RIP [RËDÁÇTÊD] Week",
-	"Let me get uh...",
-	"Never forget The Alamo",
-	"Tavin: (zooms in on crotch)",
-	"Biggy Mike",
-	"Let me be clear",
-	"Let me be Frank",
-	"Owen is the Drizzler",
-	"Cannibal Sam O'Hare",
-	"Everywhere I look I see Dorbees!",
-	"Hip-hip!",
-	"[INSERT SPAM MESSAGE]",
-	"[INSERT MESSAGE]",
-	"Y'all spam more than me tbh",
-	"John, Blume & Colin's bots are mid",
-	"Boy did I open the wrong door...",
-	"I wanna be grown up, I'm not a kid no more, I was when I was four, but that was long ago!",
-	"I'm feelin' MAD stuffy rn",
-	"O'Drizzly...",
-	"Hey @Peter",
-	"@Nick Cavey has brainrot",
-	"This post was fact-checked by real American patriots! 🦅🗣️🔥💯",
-	"🚨 JAKE SHAKE INBOUND!!! 🚨",
-	"This guy's about to get Jake Shaked!",
-	"Gentlemen, @Josh Benson has been let go...",
-	"Why don't they go away?",
-	"Flec, you crazy!",
-	"You're darn tootin'!",
-	"@Brennan 🪖👨‍💻",
-	"@Nick 🏒🤓👨‍🔬",
-	"@Tommy 🤓🧪💊",
-	"🫃",
-	"O H... I O",
-	"👌👍🤌🤙🤟🫴🫳🫰🤞✌️🫱👉👈👇 waddup gang!",
-	"Hooray!",
-	"https://youtu.be/dQw4w9WgXcQ?si=O4DTK23xflTjC0XK",
-	"🎶 I say right foot creep! 🎶",
-];
-
-function respond() {
-	var request = JSON.parse(this.req.chunks[0]);
-
-	if ((request.text && Math.random() > 0.9)) {
-		this.res.writeHead(200);
-		postMessage();
-		this.res.end();
-	}
+// Utility Functions
+function getRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function getRandomIndex(arr) {
-	return Math.floor(Math.random() * arr.length);
+function getRandomMedia(type) {
+    if (type === 'images') return getRandom(images);
+    if (type === 'gifs') return getRandom(gifs);
+    if (type === 'videos') return getRandom(videos);
+    return null;
 }
 
-function postMessage() {
-	body.text = quotes[getRandomIndex(quotes)];
+async function sendMessage({ text = null, image_url = null, video_url = null, user_id = null, reply_id = null }) {
+    const GROUPME_POST_URL = 'https://api.groupme.com/v3/bots/post';
 
-	console.log('sending ' + body.text + ' to ' + botID);
+    if (!text && !image_url && !video_url) {
+        console.warn("sendMessage called with no content. Aborting send.");
+        return null;
+    }
 
-	var botReq = HTTPS.request(options, function (res) {
-		if (res.statusCode != 202) {
-			console.log('rejecting bad status code ' + res.statusCode);
-		}
-	});
+    const payload = { bot_id: BOT_ID, text: text || "" };
+    const attachments = [];
 
-	botReq.on('error', function (err) {
-		console.log('error posting message ' + JSON.stringify(err));
-	});
-	botReq.on('timeout', function (err) {
-		console.log('timeout posting message ' + JSON.stringify(err));
-	});
-	botReq.end(JSON.stringify(body));
+    if (image_url) {
+        attachments.push({ type: 'image', url: image_url });
+    }
+    if (video_url) {
+        if (video_url.endsWith('.mp4')) {
+            const preview_url = video_url.slice(0, -3) + 'jpg';
+            attachments.push({ type: 'video', url: video_url, preview_url });
+        }
+    }
+    if (user_id) {
+        const user_name = USER_ID_TO_NAME[user_id] || "user";
+        const mention_text = `@${user_name}`;
+        payload.text = payload.text ? `${mention_text} ${payload.text}` : mention_text;
+        attachments.push({
+            type: "mentions",
+            user_ids: [user_id],
+            loci: [[0, mention_text.length]]
+        });
+    }
+    if (reply_id) {
+        attachments.push({
+            type: "reply",
+            reply_id,
+            base_reply_id: reply_id
+        });
+    }
+    if (attachments.length > 0) {
+        payload.attachments = attachments;
+    }
+
+    try {
+        const response = await axios.post(GROUPME_POST_URL, payload);
+        console.log(`Status: ${response.status}, Content: ${JSON.stringify(response.data)}`);
+        return response.data;
+    } catch (e) {
+        console.error(`Error sending message: ${e}`);
+        return null;
+    }
 }
 
-exports.respond = respond;
+// Main webhook endpoint for GroupMe callback
+app.post('/callback', async (req, res) => {
+    const message = req.body;
+
+    // Ignore messages sent by the bot itself
+    if (message.sender_type && message.sender_type === 'bot') {
+        return res.sendStatus(200);
+    }
+
+    // Example: respond to a keyword or randomly
+    const shouldRespond = Math.random() < 0.5; // Adjust probability as needed
+    if (shouldRespond) {
+        let include_text = Math.random() < 0.5;
+        let include_media = Math.random() < 0.5;
+        let include_mention = Math.random() < 0.5;
+
+        if (!include_text && !include_media) {
+            if (Math.random() < 0.5) include_text = true;
+            else include_media = true;
+        }
+
+        let text = null, image_url = null, video_url = null;
+
+        if (include_text) {
+            text = getRandom(quotes);
+        }
+        if (include_media) {
+            const media_type = getRandom(MEDIA_TYPES);
+            const media_url = getRandomMedia(media_type);
+            if (media_type === 'images' || media_type === 'gifs') {
+                image_url = media_url;
+            } else {
+                video_url = media_url;
+            }
+        }
+
+        const mention_user_id = include_mention ? message.sender_id : null;
+
+        if (text || image_url || video_url) {
+            await sendMessage({
+                text,
+                image_url,
+                video_url,
+                user_id: mention_user_id,
+                reply_id: message.id
+            });
+        }
+    }
+
+    res.sendStatus(200);
+});
+
+// Health check endpoint
+app.get('/', (req, res) => {
+    res.send('Bot is running.');
+});
+
+app.listen(PORT, () => {
+    console.log(`Bot server listening on port ${PORT}`);
+});
