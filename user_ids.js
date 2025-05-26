@@ -67,4 +67,4 @@ for (const [name, uid] of Object.entries(NAME_TO_USER_ID)) {
     USER_ID_TO_NAME[uid] = name;
 }
 
-export { NAME_TO_USER_ID, USER_ID_TO_NAME };
+module.exports = { NAME_TO_USER_ID, USER_ID_TO_NAME };

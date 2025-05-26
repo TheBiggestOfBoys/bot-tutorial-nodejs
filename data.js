@@ -293,4 +293,4 @@ const videos = [
     "https://v.groupme.com/25731142/2024-11-24T19:12:50Z/52643fcc.640x1138r0.mp4"
 ];
 
-export { quotes, images, gifs, videos };
+module.exports = { quotes, images, gifs, videos };
