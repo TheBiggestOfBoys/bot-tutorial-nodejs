@@ -188,21 +188,32 @@ app.post('/callback', async (req, res) => {
 		return res.sendStatus(200);
 	}
 
-	// --- Custom triggers: quotify & hardly know her ---
-	let customResponse = null;
+	// --- Always check for "hardly know her" ---
 	if (message.text) {
-		customResponse = quotify(message.text, 0.25) || hardlyKnowHer(message.text);
+		const hkh = hardlyKnowHer(message.text);
+		if (hkh) {
+			await sendMessage({
+				text: hkh,
+				reply_id: message.id
+			});
+			return res.sendStatus(200);
+		}
 	}
-	if (customResponse) {
-		await sendMessage({
-			text: customResponse,
-			reply_id: message.id
-		});
-		return res.sendStatus(200);
-	}
-	// --- End custom triggers ---
 
+	// --- Quotify only with response probability ---
 	const shouldRespond = Math.random() < RESPONSE_PROBABILITY;
+	if (shouldRespond && message.text) {
+		const quotified = quotify(message.text, 0.25);
+		if (quotified) {
+			await sendMessage({
+				text: quotified,
+				reply_id: message.id
+			});
+			return res.sendStatus(200);
+		}
+	}
+
+	// --- Normal random response logic ---
 	if (shouldRespond) {
 		let include_text = Math.random() < INCLUDE_TEXT_PROBABILITY;
 		let include_media = Math.random() < INCLUDE_MEDIA_PROBABILITY;
