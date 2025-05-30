@@ -44,7 +44,7 @@ app.use(express.json());
 /**
  * Returns a random element from an array.
  * @param {Array} arr 
- * @returns {*} Random element
+ * @returns {string} Random element of the array (quote/URL)
  */
 function getRandom(arr) {
 	return arr[Math.floor(Math.random() * arr.length)];
@@ -59,6 +59,47 @@ function getRandomMedia(type) {
 	if (type === 'images') return getRandom(images);
 	if (type === 'gifs') return getRandom(gifs);
 	if (type === 'videos') return getRandom(videos);
+	return null;
+}
+
+/**
+ * For each word in the text, randomly chooses to quotify it based on a percentage passed to the function.
+ * Returns the text with randomly quoted words if any were quotified, otherwise null.
+ * @param {string} text
+ * @param {number} quotyness - Probability (0 to 1) to quotify each word
+ * @returns {string|null}
+ */
+function quotify(text, quotyness) {
+	if (typeof text !== 'string' || text.trim().length === 0) return null;
+	const words = text.split(/\s+/);
+	let changed = false;
+	const quotified = words.map(word => {
+		if (Math.random() < quotyness) {
+			changed = true;
+			return `"${word}"`;
+		}
+		return word;
+	});
+	return changed ? quotified.join(' ') : null;
+}
+
+/**
+ * If a message ends with a word ending in 'her', returns a "hardly know her" joke.
+ * E.g., "They never found the killer" -> "Kill her? I hardly know her!"
+ * @param {string} text
+ * @returns {string|null}
+ */
+function hardlyKnowHer(text) {
+	if (typeof text === 'string') {
+		const match = text.match(/(\w+)\s*her\s*$/i);
+		if (match && match[1]) {
+			let base = match[1];
+			if (base.length > 0 && match[0][0] === match[0][0].toUpperCase()) {
+				base = base[0].toUpperCase() + base.slice(1);
+			}
+			return `${base} her? I hardly know her!`;
+		}
+	}
 	return null;
 }
 //#endregion
@@ -146,6 +187,20 @@ app.post('/callback', async (req, res) => {
 	if (message.sender_type && message.sender_type === 'bot') {
 		return res.sendStatus(200);
 	}
+
+	// --- Custom triggers: quotify & hardly know her ---
+	let customResponse = null;
+	if (message.text) {
+		customResponse = quotify(message.text, 0.25) || hardlyKnowHer(message.text);
+	}
+	if (customResponse) {
+		await sendMessage({
+			text: customResponse,
+			reply_id: message.id
+		});
+		return res.sendStatus(200);
+	}
+	// --- End custom triggers ---
 
 	const shouldRespond = Math.random() < RESPONSE_PROBABILITY;
 	if (shouldRespond) {
