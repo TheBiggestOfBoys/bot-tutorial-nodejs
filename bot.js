@@ -28,13 +28,14 @@ const PORT = process.env.PORT || 5000;
 const MEDIA_TYPES = ['images', 'gifs', 'videos'];
 
 // Probability settings
-const RESPONSE_PROBABILITY = parseFloat(process.env.RESPONSE_PROBABILITY) || 0.5;      // Chance to respond to a message
+const RESPONSE_PROBABILITY = parseFloat(process.env.RESPONSE_PROBABILITY) || 0.05;      // Chance to respond to a message
+const QUOTIFY_PROBABILITY = parseFloat(process.env.QUOTIFY_PROBABILITY) || 0.025;      // Chance to quotify a message
 const CALLOUT_PROBABILITY = parseFloat(process.env.CALLOUT_PROBABILITY) || 0.08;       // Chance to call out a user
 const INCLUDE_TEXT_PROBABILITY = parseFloat(process.env.INCLUDE_TEXT_PROBABILITY) || 0.5;   // Chance to include text
 const INCLUDE_MEDIA_PROBABILITY = parseFloat(process.env.INCLUDE_MEDIA_PROBABILITY) || 0.5; // Chance to include media
 const INCLUDE_MENTION_PROBABILITY = parseFloat(process.env.INCLUDE_MENTION_PROBABILITY) || 0.5; // Chance to mention user
-const DOCUMENT_PROBABILITY = parseFloat(process.env.DOCUMENT_PROBABILITY) || 0.07;     // Chance to include a document
-const LOCATION_PROBABILITY = parseFloat(process.env.LOCATION_PROBABILITY) || 0.07;     // Chance to include a location
+const DOCUMENT_PROBABILITY = parseFloat(process.env.DOCUMENT_PROBABILITY) || 0.1;     // Chance to include a document
+const LOCATION_PROBABILITY = parseFloat(process.env.LOCATION_PROBABILITY) || 0.1;     // Chance to include a location
 
 const app = express();
 app.use(express.json());
@@ -91,7 +92,7 @@ function quotify(text, quotyness) {
  */
 function hardlyKnowHer(text) {
 	if (typeof text === 'string') {
-		const match = text.match(/(\w+)\s*her\s*$/i);
+		const match = text.match(/(\w+er)[\s\.\!\?\,;:\-]*$/i);
 		if (match && match[1]) {
 			let base = match[1];
 			if (base.length > 0 && match[0][0] === match[0][0].toUpperCase()) {
@@ -201,8 +202,8 @@ app.post('/callback', async (req, res) => {
 	}
 
 	// --- Quotify only with response probability ---
-	const shouldRespond = Math.random() < RESPONSE_PROBABILITY;
-	if (shouldRespond && message.text) {
+	const shouldQuotify = Math.random() < QUOTIFY_PROBABILITY;
+	if (shouldQuotify && message.text) {
 		const quotified = quotify(message.text, 0.25);
 		if (quotified) {
 			await sendMessage({
@@ -214,6 +215,7 @@ app.post('/callback', async (req, res) => {
 	}
 
 	// --- Normal random response logic ---
+	const shouldRespond = Math.random() < RESPONSE_PROBABILITY;
 	if (shouldRespond) {
 		let include_text = Math.random() < INCLUDE_TEXT_PROBABILITY;
 		let include_media = Math.random() < INCLUDE_MEDIA_PROBABILITY;

@@ -1,10 +1,10 @@
 const quotes = [
-	"In this world you either drip or drown, and baby, I brought the life jacket.",
+	'"In this world you either drip or drown, and baby, I brought the life jacket." -- Jake Scott',
 	"Ok pal",
 	"Sure buddy",
 	"Ok buster",
 	"In this world you either milk or get milked, and baby, I'm the cow.",
-	"All [RËDÁÇTÊD] Week ever was, was me sitting in the DC drinking milk, in a funny outfit.",
+	'"All [RËDÁÇTÊD] Week ever was, was me sitting in the DC drinking milk, in a funny outfit." -- Jake Scott',
 	"Tavin Reeves likes crotch shots.",
 	"Uhhhh, yeah",
 	"That's right!",
@@ -28,32 +28,24 @@ const quotes = [
 	"Let me be clear",
 	"Let me be Frank",
 	"Your mind is to creamy in the gutter",
-	"@Sully..., @Sully...",
+	"Sully..., Sully...",
 	"Giga gadee gida gida ooh",
-	"@Dan Bot, pull up",
-	"All my homies hate @Dan Bot",
 	"Sammy II Sucks! 🐮",
 	"Owen is the Drizzler",
 	"Cannibal Sam O'Hare",
 	"Everywhere I look I see Dorbees!",
 	"🍺💪🐶 ROOT BEER!!!",
 	"Hip-hip!",
-	"@Tavin Reeves : 🩳📸👀",
 	"[INSERT SPAM MESSAGE]",
 	"[INSERT MESSAGE]",
 	"Y'all spam more than me tbh",
-	"John, Blume & Colin's bots are mid",
-	"@Josh Benson : 🍑🌳🏙️",
-	"@Colin Davis : 🖐️🤠🤚",
 	"Boy did I open the wrong door...",
-	"@Jake Scott : 👨‍💻🤽‍♂️🤓",
 	"🎶 I wanna be grown up, I'm not a kid no more, I was when I was four, but that was long ago! 🎶",
 	"Jake I love you, but your week sucked! - @Elijah Ladd",
 	"Michelle, uh...",
 	"Tavin_sphere.png",
 	"Josh_crying.jpg",
 	"FBI Leaks.pdf",
-	"@Sam Mauer : 📰✍️🤥",
 	"LTB",
 	"Penthouse... more like... REPENThouse",
 	"Yeah",
@@ -138,9 +130,6 @@ const quotes = [
 	"Why don't they go away?",
 	"Flec, you crazy!",
 	"You're darn tootin'!",
-	"@Brennan 🧢👨‍💻",
-	"@Nick 🏒🤓👨‍🔬",
-	"@Tommy 🤓🧪💊",
 	"🫃",
 	"O H... I O",
 	"👌👍🤌🤙🤟🫴🫳🫰🤞✌️🫱👉👈👇 waddup gang!",
@@ -166,6 +155,15 @@ const quotes = [
 	"E",
 	"... --- ...",
 	'"Bring your Taylor breast" -- D Mike',
+	"Uhhh, guys!?!",
+	"✌️✌️",
+	'My name is "Jake\'s Bot", not "Jake Bot"!',
+	"#NotMyDictator",
+	"4 More Years!",
+	"Down with The Echo!",
+	"Y'all should check this out: https://www.taylor.edu/",
+	"Josh Benson has had it too good, for too long.",
+
 ];
 
 const images = [
@@ -326,6 +324,10 @@ const images = [
 	"https://i.groupme.com/1333x1000.jpeg.ffe6dd93627c476388b3ef3cade4df5a",
 	"https://i.groupme.com/666x374.jpeg.377a0278dcee4141ae68d6f67300a822",
 	"https://i.groupme.com/1116x1487.jpeg.31dacc27548d4d4a9fc04cda39eb3b58",
+	"https://i.groupme.com/960x540.png.28fadc47087341699539c7b30e1bacb5",
+	"https://i.groupme.com/2053x927.png.2ce348e360cf449d9ec64f08959f6e39",
+	"https://i.groupme.com/600x600.png.76648036c5414b5bb9ec9c03a8d4a277",
+	"https://i.groupme.com/600x600.png.76648036c5414b5bb9ec9c03a8d4a277",
 ];
 
 const gifs = [
@@ -390,8 +392,8 @@ const videos = [
 
 const documents = [
 	{
-		url: "https://group.me/3z7S1XK3wN93E0",
-		title: "On Growth at Taylor"
+		url: "https://group.me/3jjIkzbbYUTrgu",
+		title: "The Life Together Covenant"
 	},
 ];
 
