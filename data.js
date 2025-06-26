@@ -27,7 +27,7 @@ const quotes = [
 	"Biggy Mike",
 	"Let me be clear",
 	"Let me be Frank",
-	"Your mind is to creamy in the gutter",
+	'"Your mind is to creamy in the gutter"\n-- Owen Slayton',
 	"Sully..., Sully...",
 	"Giga gadee gida gida ooh",
 	"Sammy II Sucks! 🐮",
@@ -43,9 +43,6 @@ const quotes = [
 	"🎶 I wanna be grown up, I'm not a kid no more, I was when I was four, but that was long ago! 🎶",
 	"Jake I love you, but your week sucked! - @Elijah Ladd",
 	"Michelle, uh...",
-	"Tavin_sphere.png",
-	"Josh_crying.jpg",
-	"FBI Leaks.pdf",
 	"LTB",
 	"Penthouse... more like... REPENThouse",
 	"Yeah",
@@ -163,7 +160,18 @@ const quotes = [
 	"Down with The Echo!",
 	"Y'all should check this out: https://www.taylor.edu/",
 	"Josh Benson has had it too good, for too long.",
-
+	"Your hubris will be your undoing.",
+	"LTC!",
+	"🥀",
+	'"For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life."\nJohn 3:16'
+	'"The 10 Commandments": "And God spake all these words, saying, I am the Lord thy God, which have brought thee out of the land of Egypt, out of the house of bondage.\n1) Thou shalt have no other gods before me.\n2) Thou shalt not make unto thee any graven image, or any likeness of any thing that is in heaven above, or that is in the earth beneath, or that is in the water under the earth.  Thou shalt not bow down thyself to them, nor serve them: for I the Lord thy God am a jealous God, visiting the iniquity of the fathers upon the children unto the third and fourth generation of them that hate me; And shewing mercy unto thousands of them that love me, and keep my commandments.\n3) Thou shalt not take the name of the Lord thy God in vain; for the Lord will not hold him guiltless that taketh his name in vain.\n4) Remember the sabbath day, to keep it holy.  Six days shalt thou labour, and do all thy work: But the seventh day is the sabbath of the Lord thy God: in it thou shalt not do any work, thou, nor thy son, nor thy daughter, thy manservant, nor thy maidservant, nor thy cattle, nor thy stranger that is within thy gates: For in six days the Lord made heaven and earth, the sea, and all that in them is, and rested the seventh day: wherefore the Lord blessed the sabbath day, and hallowed it.\n5) Honour thy father and thy mother: that thy days may be long upon the land which the Lord thy God giveth thee.\n6) Thou shalt not kill.\n7) Thou shalt not commit adultery.\n8) Thou shalt not steal.\n9) Thou shalt not bear false witness against thy neighbour.\n10) Thou shalt not covet thy neighbour\'s house, thou shalt not covet thy neighbour\'s wife, nor his manservant, nor his maidservant, nor his ox, nor his ass, nor any thing that is thy neighbour\'s."',
+	"The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal. [beep] A single lap should be completed each time you hear this sound. [ding] Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start."
+	'Make sure to go to "DJ Noah\'s Cassette Club", Sundays at 3pm!',
+	"I love Jake",
+	"Go to bed 'lil bro",
+	"Womp womp 'lil bro",
+	"womp²",
+	'"Jake, I love you, but your [[RËDÁÇTÊD]] Week was terrible."\n-- Elijah Ladd',
 ];
 
 const images = [
@@ -374,7 +382,8 @@ const gifs = [
 	"https://i.groupme.com/498x498.gif.3a543e5dadaf4d888a2ffd8e0d495a35",
 	"https://i.groupme.com/384x480.gif.74a38232c0654710b0887cb7885c4699",
 	"https://i.groupme.com/373x498.gif.7ddb7644751e47e1954de639b144d883",
-	"https://i.groupme.com/480x640.gif.5649a7b96d3c445f8938d7bfcf1f15ef"
+	"https://i.groupme.com/480x640.gif.5649a7b96d3c445f8938d7bfcf1f15ef",
+	"https://i.groupme.com/400x300.gif.b729ff4213f44065a8e546346b1e9cc0",
 ];
 
 const videos = [
