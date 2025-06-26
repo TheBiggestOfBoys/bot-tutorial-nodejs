@@ -30,6 +30,7 @@ const MEDIA_TYPES = ['images', 'gifs', 'videos'];
 // Probability settings
 const RESPONSE_PROBABILITY = parseFloat(process.env.RESPONSE_PROBABILITY) || 0.05;      // Chance to respond to a message
 const QUOTIFY_PROBABILITY = parseFloat(process.env.QUOTIFY_PROBABILITY) || 0.025;      // Chance to quotify a message
+const HARDLY_KNOW_HER_PROBABILITY = parseFloat(process.env.HARDLY_KNOW_HER_PROBABILITY) || 0.1; // Chance to "hardly know her"
 const CALLOUT_PROBABILITY = parseFloat(process.env.CALLOUT_PROBABILITY) || 0.08;       // Chance to call out a user
 const INCLUDE_TEXT_PROBABILITY = parseFloat(process.env.INCLUDE_TEXT_PROBABILITY) || 0.5;   // Chance to include text
 const INCLUDE_MEDIA_PROBABILITY = parseFloat(process.env.INCLUDE_MEDIA_PROBABILITY) || 0.5; // Chance to include media
@@ -98,7 +99,7 @@ function hardlyKnowHer(text) {
 			if (base.length > 0 && match[0][0] === match[0][0].toUpperCase()) {
 				base = base[0].toUpperCase() + base.slice(1);
 			}
-			return `${base} her? I hardly know her!`;
+			return `${base[:-2]} her? I hardly know her!`;
 		}
 	}
 	return null;
@@ -193,11 +194,14 @@ app.post('/callback', async (req, res) => {
 	if (message.text) {
 		const hkh = hardlyKnowHer(message.text);
 		if (hkh) {
-			await sendMessage({
-				text: hkh,
-				reply_id: message.id
-			});
-			return res.sendStatus(200);
+			const shouldHardlyKnowHer = Math.random() < HARDLY_KNOW_HER_PROBABILITY;
+			if (shouldHardlyKnowHer) {
+				await sendMessage({
+					text: hkh,
+					reply_id: message.id
+				});
+				return res.sendStatus(200);
+			}
 		}
 	}
 
