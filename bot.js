@@ -92,17 +92,18 @@ function quotify(text, quotyness) {
  * @returns {string|null}
  */
 function hardlyKnowHer(text) {
-	if (typeof text === 'string') {
-		const match = text.match(/(\w+er)[\s\.\!\?\,;:\-]*$/i);
-		if (match && match[1]) {
-			let base = match[1];
-			if (base.length > 0 && match[0][0] === match[0][0].toUpperCase()) {
-				base = base[0].toUpperCase() + base.slice(1);
-			}
-			return `${base[:-2]} her? I hardly know her!`;
-		}
-	}
-	return null;
+    if (typeof text === 'string') {
+        const match = text.match(/(\w+)er\b/i);
+        if (match && match[1]) {
+            let base = match[1];
+            // Capitalize if the original word was capitalized
+            if (text.match(new RegExp(`\\b${base}er`, 'i'))[0][0] === text.match(new RegExp(`\\b${base}er`, 'i'))[0][0].toUpperCase()) {
+                base = base[0].toUpperCase() + base.slice(1).toLowerCase();
+            }
+            return `${base} her? I hardly know her!`;
+        }
+    }
+    return null;
 }
 //#endregion
 

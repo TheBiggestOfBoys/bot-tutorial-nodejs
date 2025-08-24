@@ -163,9 +163,9 @@ const quotes = [
 	"Your hubris will be your undoing.",
 	"LTC!",
 	"🥀",
-	'"For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life."\nJohn 3:16'
+	'"For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life."\nJohn 3:16',
 	'"The 10 Commandments": "And God spake all these words, saying, I am the Lord thy God, which have brought thee out of the land of Egypt, out of the house of bondage.\n1) Thou shalt have no other gods before me.\n2) Thou shalt not make unto thee any graven image, or any likeness of any thing that is in heaven above, or that is in the earth beneath, or that is in the water under the earth.  Thou shalt not bow down thyself to them, nor serve them: for I the Lord thy God am a jealous God, visiting the iniquity of the fathers upon the children unto the third and fourth generation of them that hate me; And shewing mercy unto thousands of them that love me, and keep my commandments.\n3) Thou shalt not take the name of the Lord thy God in vain; for the Lord will not hold him guiltless that taketh his name in vain.\n4) Remember the sabbath day, to keep it holy.  Six days shalt thou labour, and do all thy work: But the seventh day is the sabbath of the Lord thy God: in it thou shalt not do any work, thou, nor thy son, nor thy daughter, thy manservant, nor thy maidservant, nor thy cattle, nor thy stranger that is within thy gates: For in six days the Lord made heaven and earth, the sea, and all that in them is, and rested the seventh day: wherefore the Lord blessed the sabbath day, and hallowed it.\n5) Honour thy father and thy mother: that thy days may be long upon the land which the Lord thy God giveth thee.\n6) Thou shalt not kill.\n7) Thou shalt not commit adultery.\n8) Thou shalt not steal.\n9) Thou shalt not bear false witness against thy neighbour.\n10) Thou shalt not covet thy neighbour\'s house, thou shalt not covet thy neighbour\'s wife, nor his manservant, nor his maidservant, nor his ox, nor his ass, nor any thing that is thy neighbour\'s."',
-	"The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal. [beep] A single lap should be completed each time you hear this sound. [ding] Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start."
+	"The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal. [beep] A single lap should be completed each time you hear this sound. [ding] Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.",
 	'Make sure to go to "DJ Noah\'s Cassette Club", Sundays at 3pm!',
 	"I love Jake",
 	"Go to bed 'lil bro",
@@ -262,7 +262,7 @@ const images = [
 	"https://i.groupme.com/503x496.jpeg.2fcfba914bd4453985664fed4e586fcb",
 	"https://i.groupme.com/800x450.jpeg.e57e99864f9448ee909a0491c3c86761",
 	"https://i.groupme.com/388x392.jpeg.5501575e561d4ef5a13694c372c14b96",
-	"https://i.groupme.com/1165x874.jpeg.53b4378e18d54b88898c0d5b2733fa01.",
+	"https://i.groupme.com/1165x874.jpeg.53b4378e18d54b88898c0d5b2733fa01",
 	"https://i.groupme.com/2160x2574.jpeg.9358bbca33f4469db3817a81fba0f215",
 	"https://i.groupme.com/3024x4032.jpeg.b62751eceff14412927b16f18ee5dcf7",
 	"https://i.groupme.com/554x752.jpeg.2c244d8c6bcb4138aa7a9083ab043831",
