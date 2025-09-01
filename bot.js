@@ -55,38 +55,38 @@ const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
  * @returns {Promise<Array|null>} Array of member objects or null if error
  */
 async function getGroupMembers() {
-    // Check if cache is still valid
-    if (membersCache && Date.now() < cacheExpiry) {
-        return membersCache;
-    }
+	// Check if cache is still valid
+	if (membersCache && Date.now() < cacheExpiry) {
+		return membersCache;
+	}
 
-    if (!GROUP_ID || !ACCESS_TOKEN) {
-        console.warn('GROUP_ID and ACCESS_TOKEN required for user tagging');
-        return null;
-    }
+	if (!GROUP_ID || !ACCESS_TOKEN) {
+		console.warn('GROUP_ID and ACCESS_TOKEN required for user tagging');
+		return null;
+	}
 
-    try {
-        console.log('Fetching group members from API...');
-        
-        const response = await axios.get(`https://api.groupme.com/v3/groups/${GROUP_ID}/members`, {
-            params: { token: ACCESS_TOKEN }
-        });
+	try {
+		console.log('Fetching group members from API...');
 
-        if (response.data.meta.code !== 200) {
-            console.error('GroupMe API Error:', response.data.meta);
-            return null;
-        }
+		const response = await axios.get(`https://api.groupme.com/v3/groups/${GROUP_ID}/members`, {
+			params: { token: ACCESS_TOKEN }
+		});
 
-        membersCache = response.data.response.members;
-        cacheExpiry = Date.now() + CACHE_DURATION;
-        
-        console.log(`Loaded ${membersCache.length} group members`);
-        return membersCache;
-        
-    } catch (error) {
-        console.error('Error fetching group members:', error.message);
-        return null;
-    }
+		if (response.data.meta.code !== 200) {
+			console.error('GroupMe API Error:', response.data.meta);
+			return null;
+		}
+
+		membersCache = response.data.response.members;
+		cacheExpiry = Date.now() + CACHE_DURATION;
+
+		console.log(`Loaded ${membersCache.length} group members`);
+		return membersCache;
+
+	} catch (error) {
+		console.error('Error fetching group members:', error.message);
+		return null;
+	}
 }
 
 /**
@@ -94,10 +94,10 @@ async function getGroupMembers() {
  * @returns {Promise<Object|null>} Random member object {nickname, user_id} or null
  */
 async function getRandomMember() {
-    const members = await getGroupMembers();
-    if (!members || members.length === 0) return null;
-    
-    return members[Math.floor(Math.random() * members.length)];
+	const members = await getGroupMembers();
+	if (!members || members.length === 0) return null;
+
+	return members[Math.floor(Math.random() * members.length)];
 }
 
 /**
@@ -106,10 +106,10 @@ async function getRandomMember() {
  * @returns {Promise<Object|null>} Member object or null if not found
  */
 async function getMemberById(userId) {
-    const members = await getGroupMembers();
-    if (!members) return null;
-    
-    return members.find(member => member.user_id === userId) || null;
+	const members = await getGroupMembers();
+	if (!members) return null;
+
+	return members.find(member => member.user_id === userId) || null;
 }
 //#endregion
 
@@ -120,18 +120,18 @@ async function getMemberById(userId) {
  * @returns {string|null} Random line from file, or null if error/empty
  */
 function getRandomLineFromFile(filename) {
-    try {
-        const filePath = path.join(__dirname, 'Data', filename);
-        const content = fs.readFileSync(filePath, 'utf8');
-        const lines = content.split('\n').filter(line => line.trim() !== '');
+	try {
+		const filePath = path.join(__dirname, 'Data', filename);
+		const content = fs.readFileSync(filePath, 'utf8');
+		const lines = content.split('\n').filter(line => line.trim() !== '');
 
-        if (lines.length === 0) return null;
+		if (lines.length === 0) return null;
 
-        return lines[Math.floor(Math.random() * lines.length)];
-    } catch (error) {
-        console.error(`Error reading ${filename}:`, error);
-        return null;
-    }
+		return lines[Math.floor(Math.random() * lines.length)];
+	} catch (error) {
+		console.error(`Error reading ${filename}:`, error);
+		return null;
+	}
 }
 
 /**
@@ -140,11 +140,11 @@ function getRandomLineFromFile(filename) {
  * @returns {Object|null} {url, title} or null
  */
 function getRandomDocument() {
-    const line = getRandomLineFromFile('documents.txt');
-    if (!line) return null;
-    
-    const [url, title] = line.split('|');
-    return url && title ? { url, title } : null;
+	const line = getRandomLineFromFile('documents.txt');
+	if (!line) return null;
+
+	const [url, title] = line.split('|');
+	return url && title ? { url, title } : null;
 }
 
 /**
@@ -153,17 +153,17 @@ function getRandomDocument() {
  * @returns {Object|null} {name, lat, lng} or null
  */
 function getRandomLocation() {
-    const line = getRandomLineFromFile('locations.txt');
-    if (!line) return null;
-    
-    const [name, lat, lng] = line.split('|');
-    if (!name || !lat || !lng) return null;
-    
-    return { 
-        name, 
-        lat: parseFloat(lat), 
-        lng: parseFloat(lng) 
-    };
+	const line = getRandomLineFromFile('locations.txt');
+	if (!line) return null;
+
+	const [name, lat, lng] = line.split('|');
+	if (!name || !lat || !lng) return null;
+
+	return {
+		name,
+		lat: parseFloat(lat),
+		lng: parseFloat(lng)
+	};
 }
 
 /**
@@ -172,7 +172,7 @@ function getRandomLocation() {
  * @returns {string|null}
  */
 function getRandomMedia(type) {
-    return getRandomLineFromFile(`${type}.txt`);
+	return getRandomLineFromFile(`${type}.txt`);
 }
 
 /**
@@ -180,7 +180,7 @@ function getRandomMedia(type) {
  * @returns {string|null}
  */
 function getRandomQuote() {
-    return getRandomLineFromFile('quotes.txt');
+	return getRandomLineFromFile('quotes.txt');
 }
 //#endregion
 
@@ -191,7 +191,7 @@ function getRandomQuote() {
  * @returns {*} Random element
  */
 function getRandom(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+	return arr[Math.floor(Math.random() * arr.length)];
 }
 
 /**
@@ -202,17 +202,17 @@ function getRandom(arr) {
  * @returns {string|null}
  */
 function quotify(text, quotyness) {
-    if (typeof text !== 'string' || text.trim().length === 0) return null;
-    const words = text.split(/\s+/);
-    let changed = false;
-    const quotified = words.map(word => {
-        if (Math.random() < quotyness) {
-            changed = true;
-            return `"${word}"`;
-        }
-        return word;
-    });
-    return changed ? quotified.join(' ') : null;
+	if (typeof text !== 'string' || text.trim().length === 0) return null;
+	const words = text.split(/\s+/);
+	let changed = false;
+	const quotified = words.map(word => {
+		if (Math.random() < quotyness) {
+			changed = true;
+			return `"${word}"`;
+		}
+		return word;
+	});
+	return changed ? quotified.join(' ') : null;
 }
 
 /**
@@ -222,18 +222,18 @@ function quotify(text, quotyness) {
  * @returns {string|null}
  */
 function hardlyKnowHer(text) {
-    if (typeof text === 'string') {
-        const match = text.match(/(\w+)er\b/i);
-        if (match && match[1]) {
-            let base = match[1];
-            // Capitalize if the original word was capitalized
-            if (text.match(new RegExp(`\\b${base}er`, 'i'))[0][0] === text.match(new RegExp(`\\b${base}er`, 'i'))[0][0].toUpperCase()) {
-                base = base[0].toUpperCase() + base.slice(1).toLowerCase();
-            }
-            return `${base} her? I hardly know her!`;
-        }
-    }
-    return null;
+	if (typeof text === 'string') {
+		const match = text.match(/(\w+)er\b/i);
+		if (match && match[1]) {
+			let base = match[1];
+			// Capitalize if the original word was capitalized
+			if (text.match(new RegExp(`\\b${base}er`, 'i'))[0][0] === text.match(new RegExp(`\\b${base}er`, 'i'))[0][0].toUpperCase()) {
+				base = base[0].toUpperCase() + base.slice(1).toLowerCase();
+			}
+			return `${base} her? I hardly know her!`;
+		}
+	}
+	return null;
 }
 //#endregion
 
@@ -249,63 +249,76 @@ function hardlyKnowHer(text) {
  * @param {Array|null} options.extra_attachments - Additional attachments (e.g., document, location).
  */
 async function sendMessage({ text = null, image_url = null, video_url = null, user_id = null, reply_id = null, extra_attachments = null }) {
-    const GROUPME_POST_URL = 'https://api.groupme.com/v3/bots/post';
+	const GROUPME_POST_URL = 'https://api.groupme.com/v3/bots/post';
 
-    if (!text && !image_url && !video_url && (!extra_attachments || extra_attachments.length === 0)) {
-        console.warn("sendMessage called with no content. Aborting send.");
-        return null;
-    }
+	if (!text && !image_url && !video_url && (!extra_attachments || extra_attachments.length === 0)) {
+		console.warn("sendMessage called with no content. Aborting send.");
+		return null;
+	}
 
-    const payload = { bot_id: BOT_ID, text: text || "" };
-    const attachments = [];
+	const payload = { bot_id: BOT_ID, text: text || "" };
+	const attachments = [];
 
-    // Attach image
-    if (image_url) {
-        attachments.push({ type: 'image', url: image_url });
-    }
-    // Attach video (with preview if possible)
-    if (video_url) {
-        if (video_url.endsWith('.mp4')) {
-            const preview_url = video_url.slice(0, -3) + 'jpg';
-            attachments.push({ type: 'video', url: video_url, preview_url });
-        }
-    }
-    // Mention user (if not a callout)
-    if (user_id) {
-        const member = await getMemberById(user_id);
-        const user_name = member ? member.nickname : "user";
-        const mention_text = `@${user_name}`;
-        payload.text = payload.text ? `${mention_text} ${payload.text}` : mention_text;
-        attachments.push({
-            type: "mentions",
-            user_ids: [user_id],
-            loci: [[0, mention_text.length]]
-        });
-    }
-    // Reply to a message
-    if (reply_id) {
-        attachments.push({
-            type: "reply",
-            reply_id,
-            base_reply_id: reply_id
-        });
-    }
-    // Add any extra attachments (documents, locations, etc.)
-    if (extra_attachments && Array.isArray(extra_attachments)) {
-        attachments.push(...extra_attachments);
-    }
-    if (attachments.length > 0) {
-        payload.attachments = attachments;
-    }
+	// Attach image
+	if (image_url) {
+		attachments.push({ type: 'image', url: image_url });
+	}
+	// Attach video (with preview if possible)
+	if (video_url) {
+		if (video_url.endsWith('.mp4')) {
+			// For GroupMe video URLs, try to generate thumbnail
+			let preview_url = null;
+			if (video_url.includes('v.groupme.com')) {
+				// GroupMe videos might have thumbnails by replacing extension
+				preview_url = video_url.slice(0, -4) + '.jpg';
+			}
 
-    try {
-        const response = await axios.post(GROUPME_POST_URL, payload);
-        console.log(`Status: ${response.status}, Content: ${JSON.stringify(response.data)}`);
-        return response.data;
-    } catch (e) {
-        console.error(`Error sending message: ${e}`);
-        return null;
-    }
+			attachments.push({
+				type: 'video',
+				url: video_url,
+				...(preview_url && { preview_url })
+			});
+		} else {
+			// Attach video without preview for non-mp4 files
+			attachments.push({ type: 'video', url: video_url });
+		}
+	}
+	// Mention user (if not a callout)
+	if (user_id) {
+		const member = await getMemberById(user_id);
+		const user_name = member ? member.nickname : "user";
+		const mention_text = `@${user_name}`;
+		payload.text = payload.text ? `${mention_text} ${payload.text}` : mention_text;
+		attachments.push({
+			type: "mentions",
+			user_ids: [user_id],
+			loci: [[0, mention_text.length]]
+		});
+	}
+	// Reply to a message
+	if (reply_id) {
+		attachments.push({
+			type: "reply",
+			reply_id,
+			base_reply_id: reply_id
+		});
+	}
+	// Add any extra attachments (documents, locations, etc.)
+	if (extra_attachments && Array.isArray(extra_attachments)) {
+		attachments.push(...extra_attachments);
+	}
+	if (attachments.length > 0) {
+		payload.attachments = attachments;
+	}
+
+	try {
+		const response = await axios.post(GROUPME_POST_URL, payload);
+		console.log(`Status: ${response.status}, Content: ${JSON.stringify(response.data)}`);
+		return response.data;
+	} catch (e) {
+		console.error(`Error sending message: ${e}`);
+		return null;
+	}
 }
 //#endregion
 
@@ -315,128 +328,128 @@ async function sendMessage({ text = null, image_url = null, video_url = null, us
  * Responds to incoming messages with random content or a callout.
  */
 app.post('/callback', async (req, res) => {
-    const message = req.body;
+	const message = req.body;
 
-    // Ignore messages sent by the bot itself
-    if (message.sender_type && message.sender_type === 'bot') {
-        return res.sendStatus(200);
-    }
+	// Ignore messages sent by the bot itself
+	if (message.sender_type && message.sender_type === 'bot') {
+		return res.sendStatus(200);
+	}
 
-    // --- Always check for "hardly know her" ---
-    if (message.text) {
-        const hkh = hardlyKnowHer(message.text);
-        if (hkh) {
-            const shouldHardlyKnowHer = Math.random() < HARDLY_KNOW_HER_PROBABILITY;
-            if (shouldHardlyKnowHer) {
-                await sendMessage({
-                    text: hkh,
-                    reply_id: message.id
-                });
-                return res.sendStatus(200);
-            }
-        }
-    }
+	// --- Always check for "hardly know her" ---
+	if (message.text) {
+		const hkh = hardlyKnowHer(message.text);
+		if (hkh) {
+			const shouldHardlyKnowHer = Math.random() < HARDLY_KNOW_HER_PROBABILITY;
+			if (shouldHardlyKnowHer) {
+				await sendMessage({
+					text: hkh,
+					reply_id: message.id
+				});
+				return res.sendStatus(200);
+			}
+		}
+	}
 
-    // --- Quotify only with response probability ---
-    const shouldQuotify = Math.random() < QUOTIFY_PROBABILITY;
-    if (shouldQuotify && message.text) {
-        const quotified = quotify(message.text, 0.25);
-        if (quotified) {
-            await sendMessage({
-                text: quotified,
-                reply_id: message.id
-            });
-            return res.sendStatus(200);
-        }
-    }
+	// --- Quotify only with response probability ---
+	const shouldQuotify = Math.random() < QUOTIFY_PROBABILITY;
+	if (shouldQuotify && message.text) {
+		const quotified = quotify(message.text, 0.25);
+		if (quotified) {
+			await sendMessage({
+				text: quotified,
+				reply_id: message.id
+			});
+			return res.sendStatus(200);
+		}
+	}
 
-    // --- Normal random response logic ---
-    const shouldRespond = Math.random() < RESPONSE_PROBABILITY;
-    if (shouldRespond) {
-        let include_text = Math.random() < INCLUDE_TEXT_PROBABILITY;
-        let include_media = Math.random() < INCLUDE_MEDIA_PROBABILITY;
-        let include_mention = Math.random() < INCLUDE_MENTION_PROBABILITY;
-        let callout_user = Math.random() < CALLOUT_PROBABILITY;
+	// --- Normal random response logic ---
+	const shouldRespond = Math.random() < RESPONSE_PROBABILITY;
+	if (shouldRespond) {
+		let include_text = Math.random() < INCLUDE_TEXT_PROBABILITY;
+		let include_media = Math.random() < INCLUDE_MEDIA_PROBABILITY;
+		let include_mention = Math.random() < INCLUDE_MENTION_PROBABILITY;
+		let callout_user = Math.random() < CALLOUT_PROBABILITY;
 
-        // Ensure at least one of text or media is included
-        if (!include_text && !include_media) {
-            if (Math.random() < 0.5) include_text = true;
-            else include_media = true;
-        }
+		// Ensure at least one of text or media is included
+		if (!include_text && !include_media) {
+			if (Math.random() < 0.5) include_text = true;
+			else include_media = true;
+		}
 
-        let text = null, image_url = null, video_url = null, attachments = [];
-        let called_out = false;
+		let text = null, image_url = null, video_url = null, attachments = [];
+		let called_out = false;
 
-        if (callout_user) {
-            // Tag a random user and call them out (no other content)
-            const randomMember = await getRandomMember();
-            if (randomMember) {
-                text = `@${randomMember.nickname}, I'm calling you out!`;
-                attachments.push({
-                    type: "mentions",
-                    user_ids: [randomMember.user_id],
-                    loci: [[0, (`@${randomMember.nickname}`).length]]
-                });
-                called_out = true;
-            }
-        } else {
-            // Normal random reply
-            if (include_text) {
-                text = getRandomQuote();
-            }
-            if (include_media) {
-                const media_type = getRandom(MEDIA_TYPES);
-                const media_url = getRandomMedia(media_type);
-                if (media_type === 'images' || media_type === 'gifs') {
-                    image_url = media_url;
-                } else {
-                    video_url = media_url;
-                }
-            }
-            // Small chance to include a document
-            if (Math.random() < DOCUMENT_PROBABILITY) {
-                const doc = getRandomDocument();
-                if (doc) {
-                    attachments.push({
-                        type: "document",
-                        url: doc.url,
-                        title: doc.title
-                    });
-                }
-            }
-            // Small chance to include a location
-            if (Math.random() < LOCATION_PROBABILITY) {
-                const loc = getRandomLocation();
-                if (loc) {
-                    attachments.push({
-                        type: "location",
-                        name: loc.name,
-                        lat: loc.lat,
-                        lng: loc.lng
-                    });
-                }
-            }
-        }
+		if (callout_user) {
+			// Tag a random user and call them out (no other content)
+			const randomMember = await getRandomMember();
+			if (randomMember) {
+				text = `@${randomMember.nickname}, I'm calling you out!`;
+				attachments.push({
+					type: "mentions",
+					user_ids: [randomMember.user_id],
+					loci: [[0, (`@${randomMember.nickname}`).length]]
+				});
+				called_out = true;
+			}
+		} else {
+			// Normal random reply
+			if (include_text) {
+				text = getRandomQuote();
+			}
+			if (include_media) {
+				const media_type = getRandom(MEDIA_TYPES);
+				const media_url = getRandomMedia(media_type);
+				if (media_type === 'images' || media_type === 'gifs') {
+					image_url = media_url;
+				} else {
+					video_url = media_url;
+				}
+			}
+			// Small chance to include a document
+			if (Math.random() < DOCUMENT_PROBABILITY) {
+				const doc = getRandomDocument();
+				if (doc) {
+					attachments.push({
+						type: "document",
+						url: doc.url,
+						title: doc.title
+					});
+				}
+			}
+			// Small chance to include a location
+			if (Math.random() < LOCATION_PROBABILITY) {
+				const loc = getRandomLocation();
+				if (loc) {
+					attachments.push({
+						type: "location",
+						name: loc.name,
+						lat: loc.lat,
+						lng: loc.lng
+					});
+				}
+			}
+		}
 
-        // Only mention user if not a callout and include_mention is true
-        let mention_user_id = null;
-        if (!called_out && include_mention) {
-            const randomMember = await getRandomMember();
-            mention_user_id = randomMember ? randomMember.user_id : null;
-        }
+		// Only mention user if not a callout and include_mention is true
+		let mention_user_id = null;
+		if (!called_out && include_mention) {
+			const randomMember = await getRandomMember();
+			mention_user_id = randomMember ? randomMember.user_id : null;
+		}
 
-        if (text || image_url || video_url || attachments.length > 0) {
-            await sendMessage({
-                text,
-                image_url,
-                video_url,
-                user_id: mention_user_id,
-                reply_id: message.id,
-                extra_attachments: attachments
-            });
-        }
-    }
-    res.sendStatus(200);
+		if (text || image_url || video_url || attachments.length > 0) {
+			await sendMessage({
+				text,
+				image_url,
+				video_url,
+				user_id: mention_user_id,
+				reply_id: message.id,
+				extra_attachments: attachments
+			});
+		}
+	}
+	res.sendStatus(200);
 });
 //#endregion
 
@@ -445,13 +458,13 @@ app.post('/callback', async (req, res) => {
  * Health check endpoint.
  */
 app.get('/', (req, res) => {
-    res.send('Bot is running.');
+	res.send('Bot is running.');
 });
 
 /**
  * Start the server.
  */
 app.listen(PORT, () => {
-    console.log(`Bot server listening on port ${PORT}`);
+	console.log(`Bot server listening on port ${PORT}`);
 });
 //#endregion
